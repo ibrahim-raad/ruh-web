@@ -8,6 +8,7 @@ const AdminUsersPage = lazy(() => import("@/pages/admin/users"));
 const AdminTherapistsPage = lazy(() => import("@/pages/admin/therapists"));
 const AdminAppointmentsPage = lazy(() => import("@/pages/admin/appointments"));
 const AdminPaymentsPage = lazy(() => import("@/pages/admin/payments"));
+const AdminPatientsPage = lazy(() => import("@/pages/admin/patients"));
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: "therapists", element: <AdminTherapistsPage /> },
       { path: "appointments", element: <AdminAppointmentsPage /> },
       { path: "payments", element: <AdminPaymentsPage /> },
+      { path: "patients", element: <AdminPatientsPage /> },
     ],
   },
 ]);

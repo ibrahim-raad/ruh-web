@@ -15,6 +15,7 @@ export default function AdminLayout() {
           <NavItem to="/admin/therapists" label="Therapists" />
           <NavItem to="/admin/appointments" label="Appointments" />
           <NavItem to="/admin/payments" label="Payments" />
+          <NavItem to="/admin/patients" label="Patients" />
         </nav>
       </aside>
       <div className="flex min-h-screen flex-col">
