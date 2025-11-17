@@ -1,9 +1,10 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/widgets/ThemeToggle";
 
 export default function AdminLayout() {
   return (
-    <div className="min-h-screen grid grid-cols-[240px_1fr]">
+    <div className="min-h-screen grid grid-cols-[240px_1fr] bg-background text-foreground">
       <aside className="border-r bg-background">
         <div className="h-14 flex items-center px-4 font-semibold">
           RUH Admin
@@ -20,6 +21,7 @@ export default function AdminLayout() {
         <header className="h-14 border-b flex items-center justify-between px-4">
           <div className="font-medium">Dashboard</div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button variant="ghost">Docs</Button>
             <Button>New</Button>
           </div>
