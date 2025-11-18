@@ -44,8 +44,11 @@ export function PublicNavbar() {
               to={n.to}
               className={({ isActive }) =>
                 [
-                  "text-foreground/80 hover:text-foreground transition-colors",
-                  isActive && "text-foreground",
+                  "relative text-foreground/70 hover:text-foreground transition-colors duration-200",
+                  "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-300",
+                  "hover:after:w-full",
+                  isActive &&
+                    "text-foreground font-medium after:w-full after:bg-primary",
                 ].join(" ")
               }
             >
