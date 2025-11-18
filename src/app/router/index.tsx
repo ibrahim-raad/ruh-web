@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy } from "react";
 import AdminLayout from "@/app/layouts/AdminLayout";
+import PublicLayout from "@/app/layouts/PublicLayout";
 
 const LandingPage = lazy(() => import("@/pages/landing"));
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
@@ -13,7 +14,8 @@ const AdminPatientsPage = lazy(() => import("@/pages/admin/patients"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />,
+    element: <PublicLayout />,
+    children: [{ index: true, element: <LandingPage /> }],
   },
   {
     path: "/admin",
