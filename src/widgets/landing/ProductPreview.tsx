@@ -2,22 +2,33 @@ import { Card } from "@/components/ui/card";
 
 export function ProductPreview() {
   return (
-    <section className="space-y-4">
-      <h2 className="text-xl font-semibold">Product Preview</h2>
-      <p className="text-sm text-muted-foreground">Simple. Private. Human.</p>
+    <section className="space-y-6">
+      <div className="space-y-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-primary">
+          Product Preview
+        </h2>
+        <p className="text-base text-muted-foreground max-w-2xl">
+          Experience a platform designed with care. Simple interfaces for
+          patients and therapists, built to keep the focus on what matters —
+          healing and connection.
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
-        <Card className="p-4 space-y-3">
-          <div className="h-4 w-28 bg-muted rounded" />
-          <div className="h-32 rounded bg-muted" />
-          <div className="grid grid-cols-2 gap-3">
-            <div className="h-16 rounded bg-linear-to-r from-[#EADFCB] to-[#A9C7E8]" />
-            <div className="h-16 rounded bg-muted" />
-          </div>
+        <Card className="p-6 flex items-center justify-center overflow-hidden bg-muted/20">
+          <img
+            src="/therapist_preview.png"
+            alt="Therapist dashboard preview"
+            className="w-full h-auto rounded-lg shadow-lg"
+          />
         </Card>
 
-        <Card className="p-4 flex items-center justify-center">
-          <div className="h-64 w-36 rounded-xl border shadow-sm bg-linear-to-b from-[#A9C7E8] to-[#EADFCB]" />
+        <Card className="p-6 flex items-center justify-center overflow-hidden bg-muted/20">
+          <img
+            src="/app_preview.png"
+            alt="Patient mobile app preview"
+            className="h-full max-h-96 w-auto rounded-2xl shadow-lg"
+          />
         </Card>
       </div>
     </section>
