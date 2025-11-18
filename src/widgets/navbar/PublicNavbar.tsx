@@ -34,9 +34,9 @@ export function PublicNavbar() {
   return (
     <header className="sticky top-0 z-40 bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 border-b">
       <div className="mx-auto max-w-7xl h-16 px-4 flex items-center justify-between">
-        <Link to="/" className="inline-flex items-center gap-2 font-semibold">
-          <img src="/logo.png" alt="ruh therapy" className="h-6" />
-          <span className="sr-only">Ruh Therapy</span>
+        <Link to="/" className="inline-flex items-center ">
+          <img src="/logo.png" alt="ruh therapy" className="h-20" />
+          <span className="text-primary font-bold text-lg">Ruh Therapy</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm">
           {navItems.map((n) => (
