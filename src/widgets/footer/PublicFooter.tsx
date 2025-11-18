@@ -5,7 +5,10 @@ export function PublicFooter() {
     <footer id="contact" className="border-t">
       <div className="mx-auto max-w-7xl px-4 py-12 grid gap-8 md:grid-cols-3">
         <div className="space-y-2">
-          <img src="/logo.png" alt="ruh therapy" className="h-6" />
+          <Link to="/" className="inline-flex items-center ">
+            <img src="/logo.png" alt="ruh therapy" className="h-20" />
+            <span className="text-primary font-bold text-lg">Ruh Therapy</span>
+          </Link>
           <p className="text-sm text-muted-foreground">
             Healing the soul through reflection and connection.
           </p>
