@@ -1,5 +1,4 @@
 import { Link, NavLink } from "react-router-dom";
-import { ThemeToggle } from "../ThemeToggle";
 import { Button } from "@/components/ui/button";
 
 type navItem = {
@@ -55,7 +54,6 @@ export function PublicNavbar() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <Button asChild variant="ghost">
             <Link to="/login">Log in</Link>
           </Button>
