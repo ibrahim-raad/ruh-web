@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { ROUTES } from "@/shared/config/routes";
 
 type navItem = {
   label: string;
@@ -11,23 +12,23 @@ type navItem = {
 const navItems: navItem[] = [
   {
     label: "Home",
-    to: "/",
+    to: ROUTES.HOME,
   },
   {
     label: "About",
-    to: "/about",
+    to: ROUTES.ABOUT,
   },
   {
     label: "For Patients",
-    to: "/for-patients",
+    to: ROUTES.FOR_PATIENTS,
   },
   {
     label: "For Therapists",
-    to: "/for-therapists",
+    to: ROUTES.FOR_THERAPISTS,
   },
   {
     label: "Contact",
-    to: "/contact",
+    to: ROUTES.CONTACT,
   },
 ];
 
@@ -37,7 +38,7 @@ export function PublicNavbar() {
   return (
     <header className="sticky top-0 z-40 bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 border-b">
       <div className="mx-auto max-w-7xl h-16 px-4 flex items-center justify-between">
-        <Link to="/" className="inline-flex items-center">
+        <Link to={ROUTES.HOME} className="inline-flex items-center">
           <img src="/logo.png" alt="ruh therapy" className="h-20" />
           <span className="text-primary font-bold text-lg">Ruh Therapy</span>
         </Link>
@@ -64,10 +65,10 @@ export function PublicNavbar() {
 
         <div className="hidden md:flex items-center gap-2">
           <Button asChild variant="ghost">
-            <Link to="/login">Log in</Link>
+            <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
           </Button>
           <Button asChild>
-            <Link to="/register">Join Now</Link>
+            <Link to={ROUTES.AUTH.REGISTER}>Join Now</Link>
           </Button>
         </div>
 
@@ -106,12 +107,18 @@ export function PublicNavbar() {
             ))}
             <div className="pt-3 border-t space-y-2">
               <Button asChild variant="ghost" className="w-full">
-                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link
+                  to={ROUTES.AUTH.LOGIN}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Log in
                 </Link>
               </Button>
               <Button asChild className="w-full">
-                <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link
+                  to={ROUTES.AUTH.REGISTER}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Join Now
                 </Link>
               </Button>
