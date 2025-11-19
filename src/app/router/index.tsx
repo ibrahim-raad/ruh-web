@@ -2,9 +2,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy } from "react";
 import AdminLayout from "@/app/layouts/AdminLayout";
 import PublicLayout from "@/app/layouts/PublicLayout";
+import { ROUTES } from "@/shared/config/routes";
 
+// Public pages
 const LandingPage = lazy(() => import("@/pages/landing"));
 const ForPatientsPage = lazy(() => import("@/pages/for-patients"));
+
+// Admin pages
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
 const AdminUsersPage = lazy(() => import("@/pages/admin/users"));
 const AdminTherapistsPage = lazy(() => import("@/pages/admin/therapists"));
@@ -12,9 +16,14 @@ const AdminAppointmentsPage = lazy(() => import("@/pages/admin/appointments"));
 const AdminPaymentsPage = lazy(() => import("@/pages/admin/payments"));
 const AdminPatientsPage = lazy(() => import("@/pages/admin/patients"));
 
+// Error pages
+const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
+const ForbiddenPage = lazy(() => import("@/pages/errors/Forbidden"));
+const ServerErrorPage = lazy(() => import("@/pages/errors/ServerError"));
+
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.HOME,
     element: <PublicLayout />,
     children: [
       { index: true, element: <LandingPage /> },
@@ -22,7 +31,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin",
+    path: ROUTES.ADMIN.ROOT,
     element: <AdminLayout />,
     children: [
       { index: true, element: <AdminOverviewPage /> },
@@ -33,6 +42,19 @@ const router = createBrowserRouter([
       { path: "payments", element: <AdminPaymentsPage /> },
       { path: "patients", element: <AdminPatientsPage /> },
     ],
+  },
+
+  {
+    path: ROUTES.ERROR.FORBIDDEN,
+    element: <ForbiddenPage />,
+  },
+  {
+    path: ROUTES.ERROR.SERVER_ERROR,
+    element: <ServerErrorPage />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 
