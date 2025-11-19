@@ -13,7 +13,7 @@ const benefits = [
 
 export function JoinBanner() {
   return (
-    <Card className="p-8 md:p-12 bg-linear-to-r from-[#294C7A]/10 to-[#A9C7E8]/10 dark:from-[#294C7A]/20 dark:to-[#A9C7E8]/20">
+    <Card className="p-8 md:p-12 bg-linear-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         <div className="space-y-4 max-w-xl">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">

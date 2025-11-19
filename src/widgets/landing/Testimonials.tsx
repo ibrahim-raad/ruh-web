@@ -21,7 +21,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <div className="rounded-none md:rounded-xl bg-[#EADFCB]/40 dark:bg-[#EADFCB]/20 py-16 px-4">
+    <div className="rounded-none md:rounded-xl bg-accent/40 dark:bg-accent/20 py-16 px-4">
       <section className="mx-auto max-w-7xl space-y-6">
         <div className="space-y-2 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">

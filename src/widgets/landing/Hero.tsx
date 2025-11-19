@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section className="grid items-center gap-10 md:grid-cols-2">
       <div className="order-2 md:order-1">
-        <div className="aspect-4/3 rounded-xl border shadow-sm bg-linear-to-br to-[#EADFCB] from-[#A9C7E8]">
+        <div className="aspect-4/3 rounded-xl border shadow-sm bg-linear-to-br to-accent from-secondary">
           <img
             src="/logo.png"
             alt="Logo Image"

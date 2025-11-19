@@ -12,7 +12,7 @@ export default function LoginPage() {
         <div className="absolute inset-0">
           {/* Large circles */}
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute top-1/3 -left-32 w-80 h-80 bg-[#EADFCB]/20 rounded-full blur-2xl" />
+          <div className="absolute top-1/3 -left-32 w-80 h-80 bg-accent/20 rounded-full blur-2xl" />
           <div className="absolute bottom-20 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
 
           {/* Grid pattern overlay */}

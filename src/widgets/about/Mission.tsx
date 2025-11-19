@@ -21,7 +21,7 @@ export function Mission() {
       </div>
 
       <div className="relative">
-        <Card className="p-8 bg-linear-to-br from-[#A9C7E8]/20 to-[#EADFCB]/20 border-none">
+        <Card className="p-8 bg-linear-to-br from-secondary/20 to-accent/20 border-none">
           <div className="flex items-center justify-center h-64">
             <MessageCircle
               className="h-32 w-32 text-primary/40"

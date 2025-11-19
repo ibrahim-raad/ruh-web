@@ -30,7 +30,7 @@ export function TherapistsHero() {
 
       <div className="order-1 md:order-2">
         <div className="relative rounded-xl border shadow-2xl overflow-hidden bg-muted/20">
-          <div className="aspect-video w-full bg-linear-to-br from-[#294C7A]/60 to-[#A9C7E8]/60 flex items-center justify-center">
+          <div className="aspect-video w-full bg-linear-to-br from-primary/60 to-secondary/60 flex items-center justify-center">
             <img
               src="/therapist_preview.png"
               alt="Therapist Dashboard Preview"
