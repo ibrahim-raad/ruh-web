@@ -4,6 +4,7 @@ import AdminLayout from "@/app/layouts/AdminLayout";
 import PublicLayout from "@/app/layouts/PublicLayout";
 
 const LandingPage = lazy(() => import("@/pages/landing"));
+const ForPatientsPage = lazy(() => import("@/pages/for-patients"));
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
 const AdminUsersPage = lazy(() => import("@/pages/admin/users"));
 const AdminTherapistsPage = lazy(() => import("@/pages/admin/therapists"));
@@ -15,7 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <PublicLayout />,
-    children: [{ index: true, element: <LandingPage /> }],
+    children: [
+      { index: true, element: <LandingPage /> },
+      { path: "for-patients", element: <ForPatientsPage /> },
+    ],
   },
   {
     path: "/admin",
