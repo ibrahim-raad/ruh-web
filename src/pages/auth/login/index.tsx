@@ -1,26 +1,124 @@
 import { LoginForm } from "@/widgets/auth/LoginForm";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
-import { ArrowLeft, Heart, Shield, Sparkles, Users } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="flex flex-col justify-center px-8 py-12 lg:px-16">
-        <div className="w-full max-w-md mx-auto space-y-8">
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                Welcome back
-              </h1>
-              <p className="text-base text-muted-foreground">
-                Sign in to your account to continue
-              </p>
+    <div className="min-h-screen grid lg:grid-cols-[1.2fr_1fr]">
+      {/* Left Side - Visual Art */}
+      <div className="hidden lg:block relative overflow-hidden bg-linear-to-br from-primary via-chart-4 to-secondary">
+        {/* Animated Background Shapes */}
+        <div className="absolute inset-0">
+          {/* Large circles */}
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/3 -left-32 w-80 h-80 bg-[#EADFCB]/20 rounded-full blur-2xl" />
+          <div className="absolute bottom-20 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+
+          {/* Grid pattern overlay */}
+          <div
+            className="absolute inset-0 opacity-5"
+            style={{
+              backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
+              backgroundSize: "40px 40px",
+            }}
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative h-full flex flex-col justify-center px-16 py-20">
+          <div className="space-y-12">
+            {/* Brand Section */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2">
+                <img
+                  src="/logo.png"
+                  alt="Ruh Therapy"
+                  className="h-16 brightness-0 invert"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+                  Empowering your practice
+                </h2>
+                <p className="text-xl text-white/80 max-w-lg">
+                  A professional dashboard designed for therapists and
+                  administrators to focus on care, not administration.
+                </p>
+              </div>
             </div>
+
+            {/* Feature Cards */}
+            <div className="space-y-4">
+              <div className="group flex items-start gap-4 p-5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                  <span className="text-2xl">📊</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold text-lg mb-1">
+                    Streamlined Management
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    Manage appointments, sessions, and patient records all in
+                    one place
+                  </p>
+                </div>
+              </div>
+
+              <div className="group flex items-start gap-4 p-5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                  <span className="text-2xl">🤖</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold text-lg mb-1">
+                    AI Session Summaries
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    Automatic session notes and insights to save you time
+                  </p>
+                </div>
+              </div>
+
+              <div className="group flex items-start gap-4 p-5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                  <span className="text-2xl">💰</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold text-lg mb-1">
+                    Payment Tracking
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    Track earnings, invoices, and get paid securely per session
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="flex items-center justify-center px-8 py-12 lg:px-16 bg-background">
+        <div className="w-full max-w-md space-y-8">
+          {/* Logo (mobile only) */}
+          <Link to={ROUTES.HOME} className="inline-block lg:hidden">
+            <img src="/logo.png" alt="Ruh Therapy" className="h-16" />
+          </Link>
+
+          {/* Heading */}
+          <div className="space-y-3">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+              Welcome back
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Sign in to continue your journey
+            </p>
           </div>
 
           {/* Login Form */}
           <LoginForm />
+
           {/* Back to Home Link */}
           <Link
             to={ROUTES.HOME}
@@ -29,66 +127,6 @@ export default function LoginPage() {
             <ArrowLeft className="h-4 w-4" />
             Back to home
           </Link>
-        </div>
-      </div>
-
-      {/* Right Side - Visual Elements */}
-      <div className="hidden lg:flex items-center justify-center bg-linear-to-br from-[#294C7A] to-[#A9C7E8] p-16 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
-
-        {/* Main Content */}
-        <div className="relative z-10 max-w-lg space-y-12">
-          {/* Hero Text */}
-          <div className="space-y-4 text-white">
-            <h2 className="text-4xl font-bold leading-tight">
-              Healing through reflection and connection
-            </h2>
-            <p className="text-lg text-white/80">
-              Connect with trusted therapists and track your journey in a calm,
-              secure space.
-            </p>
-          </div>
-
-          {/* Floating Cards */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="group bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-              <Shield className="h-8 w-8 text-white mb-3" />
-              <h3 className="text-white font-semibold mb-1">
-                Secure & Private
-              </h3>
-              <p className="text-white/70 text-sm">
-                Your data is encrypted and protected
-              </p>
-            </div>
-
-            <div className="group bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-              <Heart className="h-8 w-8 text-white mb-3" />
-              <h3 className="text-white font-semibold mb-1">Human-Centered</h3>
-              <p className="text-white/70 text-sm">
-                Designed with care and empathy
-              </p>
-            </div>
-
-            <div className="group bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-              <Sparkles className="h-8 w-8 text-white mb-3" />
-              <h3 className="text-white font-semibold mb-1">Simple & Clear</h3>
-              <p className="text-white/70 text-sm">
-                No clutter, just what matters
-              </p>
-            </div>
-
-            <div className="group bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
-              <Users className="h-8 w-8 text-white mb-3" />
-              <h3 className="text-white font-semibold mb-1">Trusted Care</h3>
-              <p className="text-white/70 text-sm">
-                Verified, licensed therapists
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
