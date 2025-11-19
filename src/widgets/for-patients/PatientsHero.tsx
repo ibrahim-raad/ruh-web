@@ -46,10 +46,18 @@ export function PatientsHero() {
 
       <div className="order-1 md:order-2 flex items-center justify-center">
         <div className="relative">
-          <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl" />
-          <div className="relative aspect-9/16 w-64 rounded-3xl border-8 border-foreground/10 shadow-2xl bg-linear-to-b from-[#A9C7E8]/40 to-[#EADFCB]/40 flex items-center justify-center">
-            <div className="text-base font-medium text-muted-foreground">
-              Mobile
+          <div className="absolute inset-0 bg-linear-to-br from-primary/20 to-secondary/20 rounded-[3rem] blur-3xl" />
+
+          <div className="relative">
+            <div className="relative aspect-9/16 w-64 rounded-[3rem] bg-linear-to-b from-gray-800 to-gray-900 p-3 shadow-2xl">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-2xl" />
+              <div className="relative h-full w-full rounded-[2.5rem] overflow-hidden bg-background">
+                <img
+                  src="/app_sessions_preview.png"
+                  alt="Ruh Therapy App"
+                  className="h-full w-full object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>
