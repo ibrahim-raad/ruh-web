@@ -7,6 +7,7 @@ import { ROUTES } from "@/shared/config/routes";
 // Public pages
 const LandingPage = lazy(() => import("@/pages/landing"));
 const ForPatientsPage = lazy(() => import("@/pages/for-patients"));
+const ForTherapistsPage = lazy(() => import("@/pages/for-therapists"));
 
 // Admin pages
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: "for-patients", element: <ForPatientsPage /> },
+      { path: "for-therapists", element: <ForTherapistsPage /> },
     ],
   },
   {
