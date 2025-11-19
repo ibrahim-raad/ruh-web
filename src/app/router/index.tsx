@@ -11,6 +11,9 @@ const ForTherapistsPage = lazy(() => import("@/pages/for-therapists"));
 const AboutPage = lazy(() => import("@/pages/about"));
 const ContactPage = lazy(() => import("@/pages/contact"));
 
+// Auth pages
+const LoginPage = lazy(() => import("@/pages/auth/login"));
+
 // Admin pages
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
 const AdminUsersPage = lazy(() => import("@/pages/admin/users"));
@@ -35,6 +38,11 @@ const router = createBrowserRouter([
       { path: ROUTES.ABOUT, element: <AboutPage /> },
       { path: ROUTES.CONTACT, element: <ContactPage /> },
     ],
+  },
+
+  {
+    path: ROUTES.AUTH.LOGIN,
+    element: <LoginPage />,
   },
   {
     path: ROUTES.ADMIN.ROOT,
