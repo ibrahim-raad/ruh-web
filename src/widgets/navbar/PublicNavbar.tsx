@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ROUTES } from "@/shared/config/routes";
+import { ThemeToggle } from "@/widgets/ThemeToggle";
 
 type navItem = {
   label: string;
@@ -64,6 +65,7 @@ export function PublicNavbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
           <Button asChild variant="ghost">
             <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
           </Button>
@@ -72,17 +74,20 @@ export function PublicNavbar() {
           </Button>
         </div>
 
-        <button
-          className="md:hidden p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className="p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
       </div>
 
       {isMobileMenuOpen && (
