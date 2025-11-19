@@ -30,10 +30,10 @@ const router = createBrowserRouter([
     element: <PublicLayout />,
     children: [
       { index: true, element: <LandingPage /> },
-      { path: "for-patients", element: <ForPatientsPage /> },
-      { path: "for-therapists", element: <ForTherapistsPage /> },
-      { path: "about", element: <AboutPage /> },
-      { path: "contact", element: <ContactPage /> },
+      { path: ROUTES.FOR_PATIENTS, element: <ForPatientsPage /> },
+      { path: ROUTES.FOR_THERAPISTS, element: <ForTherapistsPage /> },
+      { path: ROUTES.ABOUT, element: <AboutPage /> },
+      { path: ROUTES.CONTACT, element: <ContactPage /> },
     ],
   },
   {
@@ -41,12 +41,12 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <AdminOverviewPage /> },
-      { path: "overview", element: <AdminOverviewPage /> },
-      { path: "users", element: <AdminUsersPage /> },
-      { path: "therapists", element: <AdminTherapistsPage /> },
-      { path: "appointments", element: <AdminAppointmentsPage /> },
-      { path: "payments", element: <AdminPaymentsPage /> },
-      { path: "patients", element: <AdminPatientsPage /> },
+      { path: ROUTES.ADMIN.OVERVIEW, element: <AdminOverviewPage /> },
+      { path: ROUTES.ADMIN.USERS, element: <AdminUsersPage /> },
+      { path: ROUTES.ADMIN.THERAPISTS, element: <AdminTherapistsPage /> },
+      { path: ROUTES.ADMIN.APPOINTMENTS, element: <AdminAppointmentsPage /> },
+      { path: ROUTES.ADMIN.PAYMENTS, element: <AdminPaymentsPage /> },
+      { path: ROUTES.ADMIN.PATIENTS, element: <AdminPatientsPage /> },
     ],
   },
 
