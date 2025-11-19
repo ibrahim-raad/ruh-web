@@ -9,6 +9,7 @@ const LandingPage = lazy(() => import("@/pages/landing"));
 const ForPatientsPage = lazy(() => import("@/pages/for-patients"));
 const ForTherapistsPage = lazy(() => import("@/pages/for-therapists"));
 const AboutPage = lazy(() => import("@/pages/about"));
+const ContactPage = lazy(() => import("@/pages/contact"));
 
 // Admin pages
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "for-patients", element: <ForPatientsPage /> },
       { path: "for-therapists", element: <ForTherapistsPage /> },
       { path: "about", element: <AboutPage /> },
+      { path: "contact", element: <ContactPage /> },
     ],
   },
   {
