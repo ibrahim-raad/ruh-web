@@ -2,12 +2,12 @@ import { NavLink, Outlet } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
 import {
   LayoutDashboard,
-  Users,
   UserCheck,
   Calendar,
   DollarSign,
   HeartPulse,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -50,18 +50,18 @@ export default function AdminLayout() {
             icon={<LayoutDashboard className="h-5 w-5" />}
           />
           <NavItem
-            to={ROUTES.ADMIN.USERS}
-            label="Users"
-            icon={<Users className="h-5 w-5" />}
-          />
-          <NavItem
             to={ROUTES.ADMIN.THERAPISTS}
             label="Therapists"
             icon={<UserCheck className="h-5 w-5" />}
           />
           <NavItem
-            to={ROUTES.ADMIN.APPOINTMENTS}
-            label="Appointments"
+            to={ROUTES.ADMIN.PATIENTS}
+            label="Patients"
+            icon={<HeartPulse className="h-5 w-5" />}
+          />
+          <NavItem
+            to={ROUTES.ADMIN.SESSIONS}
+            label="Sessions"
             icon={<Calendar className="h-5 w-5" />}
           />
           <NavItem
@@ -70,9 +70,9 @@ export default function AdminLayout() {
             icon={<DollarSign className="h-5 w-5" />}
           />
           <NavItem
-            to={ROUTES.ADMIN.PATIENTS}
-            label="Patients"
-            icon={<HeartPulse className="h-5 w-5" />}
+            to={ROUTES.ADMIN.SETTINGS}
+            label="Settings"
+            icon={<Settings className="h-5 w-5" />}
           />
         </nav>
 

@@ -19,9 +19,9 @@ export const ROUTES = {
   ADMIN: {
     ROOT: "/admin",
     OVERVIEW: "/admin/overview",
-    USERS: "/admin/users",
+    SETTINGS: "/admin/settings",
     THERAPISTS: "/admin/therapists",
-    APPOINTMENTS: "/admin/appointments",
+    SESSIONS: "/admin/sessions",
     PAYMENTS: "/admin/payments",
     PATIENTS: "/admin/patients",
   },

@@ -16,9 +16,9 @@ const LoginPage = lazy(() => import("@/pages/auth/login"));
 
 // Admin pages
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
-const AdminUsersPage = lazy(() => import("@/pages/admin/users"));
+const AdminSettingsPage = lazy(() => import("@/pages/admin/settings"));
 const AdminTherapistsPage = lazy(() => import("@/pages/admin/therapists"));
-const AdminAppointmentsPage = lazy(() => import("@/pages/admin/appointments"));
+const AdminSessionsPage = lazy(() => import("@/pages/admin/sessions"));
 const AdminPaymentsPage = lazy(() => import("@/pages/admin/payments"));
 const AdminPatientsPage = lazy(() => import("@/pages/admin/patients"));
 
@@ -50,9 +50,9 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <AdminOverviewPage /> },
       { path: ROUTES.ADMIN.OVERVIEW, element: <AdminOverviewPage /> },
-      { path: ROUTES.ADMIN.USERS, element: <AdminUsersPage /> },
+      { path: ROUTES.ADMIN.SETTINGS, element: <AdminSettingsPage /> },
       { path: ROUTES.ADMIN.THERAPISTS, element: <AdminTherapistsPage /> },
-      { path: ROUTES.ADMIN.APPOINTMENTS, element: <AdminAppointmentsPage /> },
+      { path: ROUTES.ADMIN.SESSIONS, element: <AdminSessionsPage /> },
       { path: ROUTES.ADMIN.PAYMENTS, element: <AdminPaymentsPage /> },
       { path: ROUTES.ADMIN.PATIENTS, element: <AdminPatientsPage /> },
     ],
