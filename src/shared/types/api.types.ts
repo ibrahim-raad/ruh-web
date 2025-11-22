@@ -1,9 +1,15 @@
 export interface BaseEntity {
   id: string;
   version: number;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-  deletedAt?: string | Date | null;
+  created_at: string | Date;
+  updated_at: string | Date;
+  deleted_at?: string | Date | null;
+}
+
+export interface BackendPaginatedResponse<T> {
+  items: T[];
+  total: number;
+  hasNext: boolean;
 }
 
 export interface PaginatedResponse<T> {
