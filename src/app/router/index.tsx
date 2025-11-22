@@ -3,6 +3,7 @@ import { lazy } from "react";
 import AdminLayout from "@/app/layouts/AdminLayout";
 import PublicLayout from "@/app/layouts/PublicLayout";
 import { ROUTES } from "@/shared/config/routes";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Public pages
 const LandingPage = lazy(() => import("@/pages/landing"));
@@ -21,6 +22,7 @@ const AdminTherapistsPage = lazy(() => import("@/pages/admin/therapists"));
 const AdminSessionsPage = lazy(() => import("@/pages/admin/sessions"));
 const AdminPaymentsPage = lazy(() => import("@/pages/admin/payments"));
 const AdminPatientsPage = lazy(() => import("@/pages/admin/patients"));
+const AdminCurrenciesPage = lazy(() => import("@/pages/admin/currencies"));
 
 // Error pages
 const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
@@ -55,6 +57,7 @@ const router = createBrowserRouter([
       { path: ROUTES.ADMIN.SESSIONS, element: <AdminSessionsPage /> },
       { path: ROUTES.ADMIN.PAYMENTS, element: <AdminPaymentsPage /> },
       { path: ROUTES.ADMIN.PATIENTS, element: <AdminPatientsPage /> },
+      { path: ROUTES.ADMIN.CURRENCIES, element: <AdminCurrenciesPage /> },
     ],
   },
 

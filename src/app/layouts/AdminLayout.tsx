@@ -8,6 +8,7 @@ import {
   HeartPulse,
   LogOut,
   Settings,
+  Coins,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -68,6 +69,11 @@ export default function AdminLayout() {
             to={ROUTES.ADMIN.PAYMENTS}
             label="Payments"
             icon={<DollarSign className="h-5 w-5" />}
+          />
+          <NavItem
+            to={ROUTES.ADMIN.CURRENCIES}
+            label="Currencies"
+            icon={<Coins className="h-5 w-5" />}
           />
           <NavItem
             to={ROUTES.ADMIN.SETTINGS}
