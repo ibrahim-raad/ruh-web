@@ -155,6 +155,7 @@ export default function CurrenciesPage() {
         searchPlaceholder="Search by code..."
         onPageChange={tableState.setPage}
         onLimitChange={tableState.setLimit}
+        onSortChange={tableState.setSort}
         emptyMessage="No currencies found."
       />
 

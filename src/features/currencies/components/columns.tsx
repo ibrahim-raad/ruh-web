@@ -33,8 +33,6 @@ export function createCurrencyColumns({
           {row.getValue("code")}
         </Badge>
       ),
-      size: 120,
-      minSize: 100,
     },
     {
       accessorKey: "name",
@@ -48,12 +46,16 @@ export function createCurrencyColumns({
       cell: ({ row }) => (
         <div className="font-medium">{row.getValue("name")}</div>
       ),
-      size: 300,
-      minSize: 200,
     },
     {
       accessorKey: "symbol",
-      header: "Symbol",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          title="Symbol"
+          isSorted={column.getIsSorted()}
+          onSort={() => column.toggleSorting()}
+        />
+      ),
       cell: ({ row }) => {
         const symbol = row.getValue("symbol") as string | undefined;
         return (
@@ -62,8 +64,6 @@ export function createCurrencyColumns({
           </div>
         );
       },
-      size: 100,
-      minSize: 80,
     },
     {
       accessorKey: "created_at",
@@ -82,8 +82,6 @@ export function createCurrencyColumns({
           </div>
         );
       },
-      size: 140,
-      minSize: 120,
     },
     {
       accessorKey: "updated_at",
@@ -102,8 +100,6 @@ export function createCurrencyColumns({
           </div>
         );
       },
-      size: 140,
-      minSize: 120,
     },
     {
       id: "actions",
@@ -121,8 +117,6 @@ export function createCurrencyColumns({
           </div>
         );
       },
-      size: 80,
-      minSize: 60,
     },
   ];
 }
