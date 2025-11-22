@@ -1,12 +1,14 @@
 import { api } from "@/shared/api/client";
-import type { User } from "../types/auth.types";
-import type { LoginResponse, Tokens } from "../types/auth.types";
+import type { RefreshTokenResponse, User } from "../types/auth.types";
+import type { LoginResponse } from "../types/auth.types";
 
 export interface LoginCredentials {
   email: string;
   password: string;
   rememberMe?: boolean;
 }
+
+let refreshTokenPromise: Promise<RefreshTokenResponse> | null = null;
 
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
@@ -17,9 +19,26 @@ export const authService = {
     return response.data;
   },
 
-  refreshToken: async (): Promise<Tokens> => {
-    const response = await api.post<Tokens>("/api/v1/auth/refresh-token");
-    return response.data;
+  refreshToken: async (): Promise<RefreshTokenResponse> => {
+    if (refreshTokenPromise) {
+      return refreshTokenPromise;
+    }
+
+    refreshTokenPromise = (async () => {
+      try {
+        const response = await api.post<RefreshTokenResponse>(
+          "/api/v1/auth/refresh-token"
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Error refreshing token:", error);
+        throw error;
+      } finally {
+        refreshTokenPromise = null;
+      }
+    })();
+
+    return refreshTokenPromise;
   },
 
   logout: async (): Promise<void> => {
