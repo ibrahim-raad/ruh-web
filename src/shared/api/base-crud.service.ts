@@ -47,7 +47,7 @@ export function createCrudService<T extends BaseEntity>(
 
     async update(
       id: string,
-      data: Partial<Omit<T, keyof BaseEntity>>
+      data: Partial<Omit<T, keyof BaseEntity>> & { version: number }
     ): Promise<T> {
       const response = await api.patch<T>(
         `${pathPrefix}${resourcePath}/${id}`,

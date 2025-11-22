@@ -20,7 +20,7 @@ export interface CrudQueryOptions<T extends BaseEntity> {
     create: (data: Omit<T, keyof BaseEntity>) => Promise<T>;
     update: (
       id: string,
-      data: Partial<Omit<T, keyof BaseEntity>>
+      data: Partial<Omit<T, keyof BaseEntity>> & { version: number }
     ) => Promise<T>;
     softDelete: (id: string) => Promise<void>;
     permanentDelete: (id: string) => Promise<void>;
@@ -98,7 +98,10 @@ export function createCrudHooks<T extends BaseEntity>(
       UseMutationOptions<
         T,
         Error,
-        { id: string; data: Partial<Omit<T, keyof BaseEntity>> }
+        {
+          id: string;
+          data: Partial<Omit<T, keyof BaseEntity>> & { version: number };
+        }
       >,
       "mutationFn"
     >
