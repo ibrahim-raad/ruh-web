@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,11 +9,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import { authService } from "@/features/auth/api/auth.service";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { UserRole } from "@/features/auth/types/auth.types";
+import { AxiosError } from "axios";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  rememberMe: z.boolean().optional(),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -23,34 +25,57 @@ export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+  const logout = useAuthStore((state) => state.logout);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      rememberMe: false,
-    },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await authService.login(data);
+      if (!response.tokens.access_token) {
+        throw new Error("No access token found");
+      }
+      login(response.tokens.access_token!, response.user);
 
-    console.log("Login data:", data);
+      toast.success("Login successful!");
 
-    // TODO: Replace with actual API call
-    // const response = await apiClient.post('/auth/login', data);
-    // Store token, redirect based on user role
-
-    toast.success("Login successful!");
-    navigate(ROUTES.ADMIN.OVERVIEW);
-
-    setIsSubmitting(false);
+      switch (response.user.role) {
+        case UserRole.ADMIN:
+          navigate(ROUTES.ADMIN.OVERVIEW);
+          break;
+        case UserRole.THERAPIST:
+          navigate(ROUTES.THERAPIST.DASHBOARD);
+          break;
+        case UserRole.PATIENT:
+          logout();
+          navigate(ROUTES.DOWNLOAD_APP);
+          break;
+        default:
+          navigate(ROUTES.HOME);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error("Login failed:", error);
+        toast.error(
+          error.response?.data?.message ||
+            "Login failed. Please check your credentials."
+        );
+      } else {
+        console.error("Login failed:", error);
+        toast.error("Login failed. Please check your credentials.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -112,23 +137,7 @@ export function LoginForm() {
           )}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="rememberMe"
-              defaultChecked={false}
-              onCheckedChange={(checked: boolean) => {
-                setValue("rememberMe", checked);
-              }}
-            />
-            <label
-              htmlFor="rememberMe"
-              className="text-sm text-foreground cursor-pointer"
-            >
-              Remember me
-            </label>
-          </div>
-
+        <div className="flex items-baseline justify-end">
           <Link
             to={ROUTES.AUTH.FORGOT_PASSWORD}
             className="text-sm text-primary hover:underline"

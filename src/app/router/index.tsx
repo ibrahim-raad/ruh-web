@@ -4,6 +4,8 @@ import AdminLayout from "@/app/layouts/AdminLayout";
 import PublicLayout from "@/app/layouts/PublicLayout";
 import { ROUTES } from "@/shared/config/routes";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ProtectedRoute } from "@/features/auth/components/ProtectedRoute";
+import { UserRole } from "@/features/auth/types/auth.types";
 
 // Public pages
 const LandingPage = lazy(() => import("@/pages/landing"));
@@ -11,6 +13,7 @@ const ForPatientsPage = lazy(() => import("@/pages/for-patients"));
 const ForTherapistsPage = lazy(() => import("@/pages/for-therapists"));
 const AboutPage = lazy(() => import("@/pages/about"));
 const ContactPage = lazy(() => import("@/pages/contact"));
+const DownloadAppPage = lazy(() => import("@/pages/misc/DownloadApp"));
 
 // Auth pages
 const LoginPage = lazy(() => import("@/pages/auth/login"));
@@ -39,6 +42,7 @@ const router = createBrowserRouter([
       { path: ROUTES.FOR_THERAPISTS, element: <ForTherapistsPage /> },
       { path: ROUTES.ABOUT, element: <AboutPage /> },
       { path: ROUTES.CONTACT, element: <ContactPage /> },
+      { path: ROUTES.DOWNLOAD_APP, element: <DownloadAppPage /> },
     ],
   },
 
@@ -46,18 +50,38 @@ const router = createBrowserRouter([
     path: ROUTES.AUTH.LOGIN,
     element: <LoginPage />,
   },
+
+  // Admin Routes - Protected
   {
     path: ROUTES.ADMIN.ROOT,
-    element: <AdminLayout />,
+    element: <ProtectedRoute allowedRoles={[UserRole.ADMIN]} />,
     children: [
-      { index: true, element: <AdminOverviewPage /> },
-      { path: ROUTES.ADMIN.OVERVIEW, element: <AdminOverviewPage /> },
-      { path: ROUTES.ADMIN.SETTINGS, element: <AdminSettingsPage /> },
-      { path: ROUTES.ADMIN.THERAPISTS, element: <AdminTherapistsPage /> },
-      { path: ROUTES.ADMIN.SESSIONS, element: <AdminSessionsPage /> },
-      { path: ROUTES.ADMIN.PAYMENTS, element: <AdminPaymentsPage /> },
-      { path: ROUTES.ADMIN.PATIENTS, element: <AdminPatientsPage /> },
-      { path: ROUTES.ADMIN.CURRENCIES, element: <AdminCurrenciesPage /> },
+      {
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <AdminOverviewPage /> },
+          { path: ROUTES.ADMIN.OVERVIEW, element: <AdminOverviewPage /> },
+          { path: ROUTES.ADMIN.SETTINGS, element: <AdminSettingsPage /> },
+          { path: ROUTES.ADMIN.THERAPISTS, element: <AdminTherapistsPage /> },
+          { path: ROUTES.ADMIN.SESSIONS, element: <AdminSessionsPage /> },
+          { path: ROUTES.ADMIN.PAYMENTS, element: <AdminPaymentsPage /> },
+          { path: ROUTES.ADMIN.PATIENTS, element: <AdminPatientsPage /> },
+          { path: ROUTES.ADMIN.CURRENCIES, element: <AdminCurrenciesPage /> },
+        ],
+      },
+    ],
+  },
+
+  // Therapist Routes - Protected
+  {
+    path: ROUTES.THERAPIST.ROOT,
+    element: <ProtectedRoute allowedRoles={[UserRole.THERAPIST]} />,
+    children: [
+      // TODO: Create Therapist Layout and pages
+      {
+        path: ROUTES.THERAPIST.DASHBOARD,
+        element: <div>Therapist Dashboard (Coming Soon)</div>,
+      },
     ],
   },
 

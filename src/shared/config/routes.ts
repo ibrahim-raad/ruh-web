@@ -5,6 +5,7 @@ export const ROUTES = {
   FOR_THERAPISTS: "/for-therapists",
   ABOUT: "/about",
   CONTACT: "/contact",
+  DOWNLOAD_APP: "/download-app",
 
   // Auth routes
   AUTH: {

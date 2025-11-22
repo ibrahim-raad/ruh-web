@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
 import {
   LayoutDashboard,
@@ -13,18 +13,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
 import { UserProfile } from "@/widgets/UserProfile";
-
-// TODO: Replace with actual user data from auth context
-const mockUser = {
-  name: "Admin User",
-  email: "admin@ruhtherapy.com",
-  avatar: null, // Set to image URL when available
-};
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { authService } from "@/features/auth/api/auth.service";
 
 export default function AdminLayout() {
-  const handleLogout = () => {
-    // TODO: Add actual logout logic (clear tokens, etc.)
-    window.location.href = ROUTES.HOME;
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error("Logout failed", error);
+    } finally {
+      logout();
+      navigate(ROUTES.AUTH.LOGIN);
+    }
   };
 
   const handleProfileClick = () => {
@@ -102,7 +106,16 @@ export default function AdminLayout() {
           <div className="font-semibold text-lg text-foreground">Dashboard</div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <UserProfile user={mockUser} onClick={handleProfileClick} />
+            {user && (
+              <UserProfile
+                user={{
+                  name: user.full_name,
+                  email: user.email,
+                  avatar: user.profile_url || null,
+                }}
+                onClick={handleProfileClick}
+              />
+            )}
           </div>
         </header>
 
