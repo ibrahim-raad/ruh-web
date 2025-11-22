@@ -22,7 +22,8 @@ export interface CrudQueryOptions<T extends BaseEntity> {
       id: string,
       data: Partial<Omit<T, keyof BaseEntity>>
     ) => Promise<T>;
-    delete: (id: string) => Promise<void>;
+    softDelete: (id: string) => Promise<void>;
+    permanentDelete: (id: string) => Promise<void>;
     bulkDelete?: (ids: string[]) => Promise<void>;
   };
   messages?: {
@@ -136,7 +137,7 @@ export function createCrudHooks<T extends BaseEntity>(
 
     return useMutation({
       ...restOptions,
-      mutationFn: service.delete,
+      mutationFn: service.permanentDelete,
       onSuccess: async (data, variables, onMutateResult, context) => {
         queryClient.invalidateQueries({ queryKey: [queryKey, "list"] });
         queryClient.removeQueries({

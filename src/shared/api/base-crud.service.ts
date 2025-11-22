@@ -56,12 +56,12 @@ export function createCrudService<T extends BaseEntity>(
       return response.data;
     },
 
-    async delete(id: string): Promise<void> {
+    async softDelete(id: string): Promise<void> {
       await api.delete(`${pathPrefix}${resourcePath}/${id}`);
     },
 
     async permanentDelete(id: string): Promise<void> {
-      await api.delete(`${pathPrefix}${resourcePath}/${id}/permanent`);
+      await api.delete(`${pathPrefix}${resourcePath}/permanent/${id}`);
     },
 
     async bulkDelete(ids: string[]): Promise<void> {
