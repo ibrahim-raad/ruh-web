@@ -54,6 +54,7 @@ export function createCurrencyColumns({
           title="Symbol"
           isSorted={column.getIsSorted()}
           onSort={() => column.toggleSorting()}
+          align="center"
         />
       ),
       cell: ({ row }) => {
@@ -103,7 +104,7 @@ export function createCurrencyColumns({
     },
     {
       id: "actions",
-      header: () => <div className="text-right">Actions</div>,
+      header: () => <DataTableColumnHeader title="Actions" align="right" />,
       cell: ({ row }) => {
         const currency = row.original;
         return (
