@@ -17,6 +17,9 @@ const DownloadAppPage = lazy(() => import("@/pages/misc/DownloadApp"));
 
 // Auth pages
 const LoginPage = lazy(() => import("@/pages/auth/login"));
+const ForgotPasswordPage = lazy(() => import("@/pages/auth/forgot-password"));
+const ResetPasswordPage = lazy(() => import("@/pages/auth/reset-password"));
+const VerifyEmailPage = lazy(() => import("@/pages/auth/verify-email"));
 
 // Admin pages
 const AdminOverviewPage = lazy(() => import("@/pages/admin/overview"));
@@ -49,6 +52,18 @@ const router = createBrowserRouter([
   {
     path: ROUTES.AUTH.LOGIN,
     element: <LoginPage />,
+  },
+  {
+    path: ROUTES.AUTH.FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: ROUTES.AUTH.RESET_PASSWORD,
+    element: <ResetPasswordPage />,
+  },
+  {
+    path: ROUTES.AUTH.VERIFY_EMAIL,
+    element: <VerifyEmailPage />,
   },
 
   // Admin Routes - Protected

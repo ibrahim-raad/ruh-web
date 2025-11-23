@@ -9,11 +9,12 @@ export interface LoginCredentials {
 }
 
 let refreshTokenPromise: Promise<RefreshTokenResponse> | null = null;
+const apiVersion = "/api/v1";
 
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
     const response = await api.post<LoginResponse>(
-      "/api/v1/auth/login",
+      `${apiVersion}/auth/login`,
       credentials
     );
     return response.data;
@@ -27,7 +28,7 @@ export const authService = {
     refreshTokenPromise = (async () => {
       try {
         const response = await api.post<RefreshTokenResponse>(
-          "/api/v1/auth/refresh-token"
+          `${apiVersion}/auth/refresh-token`
         );
         return response.data;
       } catch (error) {
@@ -42,11 +43,23 @@ export const authService = {
   },
 
   logout: async (): Promise<void> => {
-    await api.post("/auth/logout");
+    await api.post(`${apiVersion}/auth/logout`);
   },
 
   me: async (): Promise<User> => {
-    const response = await api.get<User>("/api/v1/auth/me");
+    const response = await api.get<User>(`${apiVersion}/auth/me`);
     return response.data;
+  },
+
+  verifyEmail: async (token: string): Promise<void> => {
+    await api.post(`${apiVersion}/auth/verify-email`, { token });
+  },
+
+  forgotPassword: async (email: string): Promise<void> => {
+    await api.post(`${apiVersion}/auth/forgot-password`, { email });
+  },
+
+  resetPassword: async (password: string, token: string): Promise<void> => {
+    await api.post(`${apiVersion}/auth/reset-password`, { password, token });
   },
 };
