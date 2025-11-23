@@ -1,16 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
-import {
-  LayoutDashboard,
-  UserCheck,
-  Calendar,
-  DollarSign,
-  HeartPulse,
-  LogOut,
-  Settings,
-  Coins,
-  Globe,
-} from "lucide-react";
+import { LogOut, Coins, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
 import { UserProfile } from "@/widgets/UserProfile";
@@ -50,7 +40,7 @@ export default function AdminLayout() {
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1">
-          <NavItem
+          {/* <NavItem
             to={ROUTES.ADMIN.OVERVIEW}
             label="Overview"
             icon={<LayoutDashboard className="h-5 w-5" />}
@@ -74,7 +64,7 @@ export default function AdminLayout() {
             to={ROUTES.ADMIN.PAYMENTS}
             label="Payments"
             icon={<DollarSign className="h-5 w-5" />}
-          />
+          /> */}
           <NavItem
             to={ROUTES.ADMIN.CURRENCIES}
             label="Currencies"
@@ -85,11 +75,11 @@ export default function AdminLayout() {
             label="Countries"
             icon={<Globe className="h-5 w-5" />}
           />
-          <NavItem
+          {/* <NavItem
             to={ROUTES.ADMIN.SETTINGS}
             label="Settings"
             icon={<Settings className="h-5 w-5" />}
-          />
+          /> */}
         </nav>
 
         {/* Logout at bottom */}
