@@ -26,6 +26,7 @@ export const ROUTES = {
     PAYMENTS: "/admin/payments",
     PATIENTS: "/admin/patients",
     CURRENCIES: "/admin/currencies",
+    COUNTRIES: "/admin/countries",
   },
 
   // Therapist routes

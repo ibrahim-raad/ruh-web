@@ -9,6 +9,7 @@ import {
   LogOut,
   Settings,
   Coins,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -78,6 +79,11 @@ export default function AdminLayout() {
             to={ROUTES.ADMIN.CURRENCIES}
             label="Currencies"
             icon={<Coins className="h-5 w-5" />}
+          />
+          <NavItem
+            to={ROUTES.ADMIN.COUNTRIES}
+            label="Countries"
+            icon={<Globe className="h-5 w-5" />}
           />
           <NavItem
             to={ROUTES.ADMIN.SETTINGS}

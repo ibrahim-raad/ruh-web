@@ -1,3 +1,4 @@
+import type { Country } from "@/features/countries/types/country.types";
 import type { BaseEntity } from "@/shared/types/api.types";
 
 export enum UserRole {
@@ -21,10 +22,6 @@ export enum UserGender {
 export enum UserEmailStatus {
   VERIFIED = "VERIFIED",
   UNVERIFIED = "UNVERIFIED",
-}
-
-export interface Country extends BaseEntity {
-  name: string;
 }
 
 export interface User extends BaseEntity {
