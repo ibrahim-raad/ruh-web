@@ -1,75 +1,82 @@
-# React + TypeScript + Vite
+# Ruh Therapy - Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Description
 
-Currently, two official plugins are available:
+Ruh Therapy is a comprehensive web platform designed to empower mental health professionals and administrators. It serves as a centralized dashboard for managing therapy sessions, patient records, payments, and platform settings. While patients access their care through a dedicated mobile application, this web portal provides the robust infrastructure needed for therapists and admins to focus on care delivery rather than administration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Backend Repository:**
+This frontend application connects to a NestJS backend. You can find the backend repository here:
+[https://github.com/ibrahim-raad/ruh-backend](https://github.com/ibrahim-raad/ruh-backend)
 
-## React Compiler
+**Key Features:**
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Role-Based Access Control:** distinct portals for Administrators and Therapists.
+- **Authentication:** Secure login with email verification and password reset capabilities.
+- **Admin Dashboard:** Management of global settings, currencies, countries, and user accounts.
+- **Therapist Dashboard:** (In progress) Session management and patient tracking.
+- **Responsive Design:** Modern, accessible UI built with Tailwind CSS and Radix UI.
 
-Note: This will impact Vite dev & build performances.
+## Live Demo
 
-## Expanding the ESLint configuration
+You can access the live application here: **[https://ruhtherapy.online](https://ruhtherapy.online)**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup Instructions
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To run this project locally, follow these steps:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1.  **Prerequisites:** Ensure you have Node.js (v22+ recommended) installed.
+2.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/ibrahim-raad/ruh-web.git
+    cd ruh-web
+    ```
+3.  **Environment Configuration:**
+    Create a `.env` file in the root directory. You must define the API URL:
+    ```bash
+    VITE_API_URL=http://localhost:3000
+    ```
+4.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+5.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+6.  **Open in browser:** Navigate to `http://localhost:5173` (or the port shown in your terminal).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Docker Support
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+You can also run the application using Docker.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1.  **Build and run with Docker Compose:**
+    Ensure your `.env` file is configured (or pass the variable directly), then run:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    ```bash
+    docker-compose up --build
+    ```
+
+    _Note: The `docker-compose.yml` maps port `8080` to the container's port `80`._
+
+2.  **Access the application:**
+    Navigate to `http://localhost:8080` in your browser.
+
+## Screenshots of the UI
+
+<!-- Instructions: Upload screenshots to a 'screenshots' folder in the root directory and uncomment the lines below. -->
+
+### Landing Page
+
+![Landing Page](./screenshots/landing.png)
+
+### Login Screen
+
+![Login Screen](./screenshots/login.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](./screenshots/admin-dashboard.png)
+
+### Mobile View
+
+![Mobile View](./screenshots/mobile.png)
