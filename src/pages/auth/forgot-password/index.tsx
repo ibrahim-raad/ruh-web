@@ -65,6 +65,9 @@ export default function ForgotPasswordPage() {
               <p className="text-muted-foreground text-sm">
                 We've sent a password reset link to the email you provided.
               </p>
+              <p className="text-muted-foreground text-sm font-medium">
+                Don't see it? Please check your spam folder.
+              </p>
             </div>
             <Button asChild variant="outline" className="w-full">
               <Link to={ROUTES.AUTH.LOGIN}>Back to Login</Link>
