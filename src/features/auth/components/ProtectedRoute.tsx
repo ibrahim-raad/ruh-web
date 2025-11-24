@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/auth.store";
 import { authService } from "../api/auth.service";
 import { ROUTES } from "@/shared/config/routes";
-import { UserRole } from "../types/auth.types";
+import { UserRole } from "@/features/users/types/user.types";
 import { Spinner } from "@/shared/components/loading/Spinner";
 
 interface ProtectedRouteProps {

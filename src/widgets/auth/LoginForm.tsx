@@ -11,8 +11,9 @@ import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
 import { authService } from "@/features/auth/api/auth.service";
 import { useAuthStore } from "@/features/auth/store/auth.store";
-import { UserRole } from "@/features/auth/types/auth.types";
+
 import { AxiosError } from "axios";
+import { UserRole } from "@/features/users/types/user.types";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email"),

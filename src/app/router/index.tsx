@@ -5,7 +5,7 @@ import PublicLayout from "@/app/layouts/PublicLayout";
 import { ROUTES } from "@/shared/config/routes";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ProtectedRoute } from "@/features/auth/components/ProtectedRoute";
-import { UserRole } from "@/features/auth/types/auth.types";
+import { UserRole } from "@/features/users/types/user.types";
 
 // Public pages
 const LandingPage = lazy(() => import("@/pages/landing"));
