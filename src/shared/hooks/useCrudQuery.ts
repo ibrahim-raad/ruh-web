@@ -12,16 +12,17 @@ import type {
   ListQueryParams,
 } from "../types/api.types";
 
-export interface CrudQueryOptions<T extends BaseEntity> {
+export interface CrudQueryOptions<
+  T extends BaseEntity,
+  CreateDto = Omit<T, keyof BaseEntity>,
+  UpdateDto = Partial<CreateDto> & { version: number },
+> {
   queryKey: string;
   service: {
     getAll: (params: ListQueryParams) => Promise<PaginatedResponse<T>>;
     getById: (id: string) => Promise<T>;
-    create: (data: Omit<T, keyof BaseEntity>) => Promise<T>;
-    update: (
-      id: string,
-      data: Partial<Omit<T, keyof BaseEntity>> & { version: number }
-    ) => Promise<T>;
+    create: (data: CreateDto) => Promise<T>;
+    update: (id: string, data: UpdateDto) => Promise<T>;
     softDelete: (id: string) => Promise<void>;
     permanentDelete: (id: string) => Promise<void>;
     bulkDelete?: (ids: string[]) => Promise<void>;
@@ -36,9 +37,11 @@ export interface CrudQueryOptions<T extends BaseEntity> {
   };
 }
 
-export function createCrudHooks<T extends BaseEntity>(
-  options: CrudQueryOptions<T>
-) {
+export function createCrudHooks<
+  T extends BaseEntity,
+  CreateDto = Omit<T, keyof BaseEntity>,
+  UpdateDto = Partial<CreateDto> & { version: number },
+>(options: CrudQueryOptions<T, CreateDto, UpdateDto>) {
   const { queryKey, service, messages } = options;
 
   function useList(
@@ -69,7 +72,7 @@ export function createCrudHooks<T extends BaseEntity>(
 
   function useCreate(
     mutationOptions?: Omit<
-      UseMutationOptions<T, Error, Omit<T, keyof BaseEntity>>,
+      UseMutationOptions<T, Error, CreateDto>,
       "mutationFn"
     >
   ) {
@@ -100,7 +103,7 @@ export function createCrudHooks<T extends BaseEntity>(
         Error,
         {
           id: string;
-          data: Partial<Omit<T, keyof BaseEntity>> & { version: number };
+          data: UpdateDto;
         }
       >,
       "mutationFn"

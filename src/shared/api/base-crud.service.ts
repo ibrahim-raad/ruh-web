@@ -22,10 +22,11 @@ function transformPaginatedResponse<T>(
   };
 }
 
-export function createCrudService<T extends BaseEntity>(
-  resourcePath: string,
-  pathPrefix: string = "/api/v1"
-) {
+export function createCrudService<
+  T extends BaseEntity,
+  CreateDto = Omit<T, keyof BaseEntity>,
+  UpdateDto = Partial<CreateDto> & { version: number },
+>(resourcePath: string, pathPrefix: string = "/api/v1") {
   return {
     async getAll(params: ListQueryParams = {}): Promise<PaginatedResponse<T>> {
       const queryString = createListQueryString(params);
@@ -40,15 +41,12 @@ export function createCrudService<T extends BaseEntity>(
       return response.data;
     },
 
-    async create(data: Omit<T, keyof BaseEntity>): Promise<T> {
+    async create(data: CreateDto): Promise<T> {
       const response = await api.post<T>(`${pathPrefix}${resourcePath}`, data);
       return response.data;
     },
 
-    async update(
-      id: string,
-      data: Partial<Omit<T, keyof BaseEntity>> & { version: number }
-    ): Promise<T> {
+    async update(id: string, data: UpdateDto): Promise<T> {
       const response = await api.patch<T>(
         `${pathPrefix}${resourcePath}/${id}`,
         data
