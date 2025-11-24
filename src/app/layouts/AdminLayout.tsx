@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
-import { LogOut, Coins, Globe, Languages } from "lucide-react";
+import { LogOut, Coins, Globe, Languages, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
 import { UserProfile } from "@/widgets/UserProfile";
@@ -79,6 +79,11 @@ export default function AdminLayout() {
             to={ROUTES.ADMIN.LANGUAGES}
             label="Languages"
             icon={<Languages className="h-5 w-5" />}
+          />
+          <NavItem
+            to={ROUTES.ADMIN.SPECIALIZATIONS}
+            label="Specializations"
+            icon={<Brain className="h-5 w-5" />}
           />
           {/* <NavItem
             to={ROUTES.ADMIN.SETTINGS}

@@ -31,6 +31,9 @@ const AdminPatientsPage = lazy(() => import("@/pages/admin/patients"));
 const AdminCurrenciesPage = lazy(() => import("@/pages/admin/currencies"));
 const AdminCountriesPage = lazy(() => import("@/pages/admin/countries"));
 const AdminLanguagesPage = lazy(() => import("@/pages/admin/languages"));
+const AdminSpecializationsPage = lazy(
+  () => import("@/pages/admin/specializations")
+);
 // Error pages
 const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
 const ForbiddenPage = lazy(() => import("@/pages/errors/Forbidden"));
@@ -85,6 +88,10 @@ const router = createBrowserRouter([
           { path: ROUTES.ADMIN.CURRENCIES, element: <AdminCurrenciesPage /> },
           { path: ROUTES.ADMIN.COUNTRIES, element: <AdminCountriesPage /> },
           { path: ROUTES.ADMIN.LANGUAGES, element: <AdminLanguagesPage /> },
+          {
+            path: ROUTES.ADMIN.SPECIALIZATIONS,
+            element: <AdminSpecializationsPage />,
+          },
         ],
       },
     ],
