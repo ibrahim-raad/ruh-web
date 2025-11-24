@@ -1,6 +1,7 @@
 import { api } from "@/shared/api/client";
-import type { RefreshTokenResponse, User } from "../types/auth.types";
+import type { RefreshTokenResponse } from "../types/auth.types";
 import type { LoginResponse } from "../types/auth.types";
+import type { User } from "@/features/users/types/user.types";
 
 export interface LoginCredentials {
   email: string;
