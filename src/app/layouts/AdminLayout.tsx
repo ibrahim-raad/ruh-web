@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
 import {
   LogOut,
@@ -8,6 +9,8 @@ import {
   BookOpen,
   Users,
   Menu,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -15,6 +18,7 @@ import { UserProfile } from "@/widgets/UserProfile";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 import { authService } from "@/features/auth/api/auth.service";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -47,61 +51,39 @@ export default function AdminLayout() {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {/* <NavItem
-          to={ROUTES.ADMIN.OVERVIEW}
-          label="Overview"
-          icon={<LayoutDashboard className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.THERAPISTS}
-          label="Therapists"
-          icon={<UserCheck className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.PATIENTS}
-          label="Patients"
-          icon={<HeartPulse className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.SESSIONS}
-          label="Sessions"
-          icon={<Calendar className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.PAYMENTS}
-          label="Payments"
-          icon={<DollarSign className="h-5 w-5" />}
-        /> */}
+        {/* General Items */}
         <NavItem
           to={ROUTES.ADMIN.ADMINS}
           label="Admins"
           icon={<Users className="h-5 w-5" />}
         />
         <NavItem
-          to={ROUTES.ADMIN.CURRENCIES}
-          label="Currencies"
-          icon={<Coins className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.COUNTRIES}
-          label="Countries"
-          icon={<Globe className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.LANGUAGES}
-          label="Languages"
-          icon={<Languages className="h-5 w-5" />}
-        />
-        <NavItem
           to={ROUTES.ADMIN.SPECIALIZATIONS}
           label="Specializations"
           icon={<BookOpen className="h-5 w-5" />}
         />
-        {/* <NavItem
-          to={ROUTES.ADMIN.SETTINGS}
-          label="Settings"
-          icon={<Settings className="h-5 w-5" />}
-        /> */}
+
+        <NavGroup
+          label="Localization"
+          icon={<Globe className="h-5 w-5" />}
+          items={[
+            {
+              to: ROUTES.ADMIN.COUNTRIES,
+              label: "Countries",
+              icon: <Globe className="h-5 w-5" />,
+            },
+            {
+              to: ROUTES.ADMIN.CURRENCIES,
+              label: "Currencies",
+              icon: <Coins className="h-5 w-5" />,
+            },
+            {
+              to: ROUTES.ADMIN.LANGUAGES,
+              label: "Languages",
+              icon: <Languages className="h-5 w-5" />,
+            },
+          ]}
+        />
       </nav>
 
       {/* Logout at bottom */}
@@ -178,25 +160,96 @@ function NavItem({
   to,
   label,
   icon,
+  className,
 }: {
   to: string;
   label: string;
   icon: React.ReactNode;
+  className?: string;
 }) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        [
+        cn(
           "w-full inline-flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
           isActive
             ? "bg-secondary text-secondary-foreground"
             : "text-muted-foreground hover:bg-accent hover:text-foreground",
-        ].join(" ")
+          className
+        )
       }
     >
       {icon}
       {label}
     </NavLink>
+  );
+}
+
+function NavGroup({
+  label,
+  icon,
+  items,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  items: { to: string; label: string; icon: React.ReactNode }[];
+}) {
+  const location = useLocation();
+
+  const isAnyChildActive = items.some((item) =>
+    location.pathname.startsWith(item.to)
+  );
+
+  const [isOpen, setIsOpen] = useState(isAnyChildActive);
+
+  useEffect(() => {
+    if (isAnyChildActive && !isOpen) {
+      setTimeout(() => {
+        setIsOpen(true);
+      }, 100);
+    }
+  }, [location.pathname, isAnyChildActive, isOpen]);
+
+  const toggleOpen = () => setIsOpen((prev) => !prev);
+
+  return (
+    <div className="w-full">
+      <button
+        onClick={toggleOpen}
+        className={cn(
+          "w-full inline-flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground",
+          isAnyChildActive
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground"
+        )}
+      >
+        <div className="flex items-center gap-3">
+          <span className={cn(isAnyChildActive ? "text-primary" : "")}>
+            {icon}
+          </span>
+          {label}
+        </div>
+        {isOpen ? (
+          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+        ) : (
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        )}
+      </button>
+
+      {isOpen && (
+        <div className="mt-1 space-y-1 pl-4 relative animate-in slide-in-from-top-2 duration-200">
+          <div className="absolute left-[11px] top-0 bottom-0 w-px bg-border" />
+          {items.map((item) => (
+            <NavItem
+              key={item.to}
+              to={item.to}
+              label={item.label}
+              icon={item.icon}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
