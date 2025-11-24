@@ -3,8 +3,10 @@ import axios, { type AxiosRequestHeaders } from "axios";
 import { useAuthStore } from "@/features/auth/store/auth.store";
 
 import { authService } from "@/features/auth/api/auth.service";
+import { ROUTES } from "../config/routes";
+import { useNavigate } from "react-router-dom";
 
-const baseURL = "";
+const baseURL = import.meta.env.VITE_API_URL;
 
 export const api = axios.create({
   baseURL,
@@ -47,11 +49,13 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
+    const navigate = useNavigate();
 
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url?.includes("/login")
+      !originalRequest.url?.includes("/login") &&
+      !originalRequest.url?.includes("/refresh-token")
     ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -82,6 +86,7 @@ api.interceptors.response.use(
       } catch (err) {
         processQueue(err, null);
         useAuthStore.getState().logout();
+        navigate(ROUTES.AUTH.LOGIN);
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
