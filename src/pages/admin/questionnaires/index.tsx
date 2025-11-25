@@ -96,10 +96,19 @@ export default function QuestionnairesPage() {
     navigate(path);
   };
 
+  const handleViewResponses = (questionnaire: Questionnaire) => {
+    const path = ROUTES.ADMIN.QUESTIONNAIRE_RESPONSES.replace(
+      ":id",
+      questionnaire.id
+    );
+    navigate(path);
+  };
+
   const columns = createQuestionnaireColumns({
     onEdit: setEditingQuestionnaire,
     onDelete: setDeletingQuestionnaire,
     onBuilder: handleBuilder,
+    onViewResponses: handleViewResponses,
     user: user!,
   });
 

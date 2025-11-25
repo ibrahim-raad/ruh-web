@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronRight,
   FileQuestion,
+  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -62,6 +63,11 @@ export default function AdminLayout() {
           to={ROUTES.ADMIN.SPECIALIZATIONS}
           label="Specializations"
           icon={<BookOpen className="h-5 w-5" />}
+        />
+        <NavItem
+          to={ROUTES.ADMIN.PATIENTS}
+          label="Patients"
+          icon={<UserRound className="h-5 w-5" />}
         />
         <NavItem
           to={ROUTES.ADMIN.QUESTIONNAIRES}

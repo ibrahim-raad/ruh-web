@@ -32,6 +32,9 @@ export const ROUTES = {
     ADMINS: "/admin/admins",
     QUESTIONNAIRES: "/admin/questionnaires",
     QUESTIONNAIRE_BUILDER: "/admin/questionnaires/:id/builder",
+    QUESTIONNAIRE_RESPONSES: "/admin/questionnaires/:id/responses",
+    QUESTIONNAIRE_RESPONSE_DETAIL:
+      "/admin/questionnaires/:questionnaireId/responses/:patientId",
   },
 
   // Therapist routes

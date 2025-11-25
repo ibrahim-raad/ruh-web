@@ -10,7 +10,7 @@ import type {
   Questionnaire,
   QuestionnaireType,
 } from "../types/questionnaire.types";
-import { CheckCircle, FileText, XCircle } from "lucide-react";
+import { CheckCircle, FileText, XCircle, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { User } from "@/features/users/types/user.types";
 
@@ -18,6 +18,7 @@ interface CreateColumnsOptions {
   onEdit: (questionnaire: Questionnaire) => void;
   onDelete: (questionnaire: Questionnaire) => void;
   onBuilder: (questionnaire: Questionnaire) => void;
+  onViewResponses: (questionnaire: Questionnaire) => void;
   user: User;
 }
 
@@ -25,6 +26,7 @@ export function createQuestionnaireColumns({
   onEdit,
   onDelete,
   onBuilder,
+  onViewResponses,
   user,
 }: CreateColumnsOptions): ColumnDef<Questionnaire>[] {
   return [
@@ -161,6 +163,11 @@ export function createQuestionnaireColumns({
                   label: "Builder",
                   onClick: () => onBuilder(questionnaire),
                   icon: <FileText className="mr-2 h-4 w-4" />,
+                },
+                {
+                  label: "Responses",
+                  onClick: () => onViewResponses(questionnaire),
+                  icon: <Eye className="mr-2 h-4 w-4" />,
                 },
                 createEditAction(() => onEdit(questionnaire)),
                 createDeleteAction(() => onDelete(questionnaire)),

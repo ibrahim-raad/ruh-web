@@ -41,6 +41,12 @@ const AdminQuestionnairesPage = lazy(
 const QuestionnaireBuilderPage = lazy(
   () => import("@/pages/admin/questionnaires/builder")
 );
+const ResponseDetailPage = lazy(
+  () => import("@/pages/admin/questionnaires/responses/detail")
+);
+const QuestionnaireResponsesPage = lazy(
+  () => import("@/pages/admin/questionnaires/responses/index")
+);
 
 // Error pages
 const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
@@ -111,6 +117,14 @@ const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN.QUESTIONNAIRE_BUILDER,
             element: <QuestionnaireBuilderPage />,
+          },
+          {
+            path: ROUTES.ADMIN.QUESTIONNAIRE_RESPONSES,
+            element: <QuestionnaireResponsesPage />,
+          },
+          {
+            path: ROUTES.ADMIN.QUESTIONNAIRE_RESPONSE_DETAIL,
+            element: <ResponseDetailPage />,
           },
         ],
       },
