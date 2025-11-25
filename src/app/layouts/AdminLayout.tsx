@@ -13,6 +13,7 @@ import {
   ChevronRight,
   FileQuestion,
   UserRound,
+  HeartPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -63,6 +64,11 @@ export default function AdminLayout() {
           to={ROUTES.ADMIN.PATIENTS}
           label="Patients"
           icon={<UserRound className="h-5 w-5" />}
+        />
+        <NavItem
+          to={ROUTES.ADMIN.THERAPISTS}
+          label="Therapists"
+          icon={<HeartPlus className="h-5 w-5" />}
         />
         <NavItem
           to={ROUTES.ADMIN.QUESTIONNAIRES}
