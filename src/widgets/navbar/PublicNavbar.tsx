@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ROUTES } from "@/shared/config/routes";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { UserRole } from "@/features/users/types/user.types";
 
 type navItem = {
   label: string;
@@ -35,6 +37,21 @@ const navItems: navItem[] = [
 
 export function PublicNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user } = useAuthStore();
+
+  const getDashboardLink = () => {
+    if (!user) return ROUTES.HOME;
+    switch (user.role) {
+      case UserRole.ADMIN:
+        return ROUTES.ADMIN.ADMINS;
+      case UserRole.THERAPIST:
+        return ROUTES.THERAPIST.DASHBOARD;
+      case UserRole.PATIENT:
+        return ROUTES.DOWNLOAD_APP;
+      default:
+        return ROUTES.HOME;
+    }
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 border-b">
@@ -66,12 +83,20 @@ export function PublicNavbar() {
 
         <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
-          <Button asChild variant="ghost">
-            <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
-          </Button>
-          <Button asChild>
-            <Link to={ROUTES.AUTH.REGISTER}>Join Now</Link>
-          </Button>
+          {isAuthenticated ? (
+            <Button asChild>
+              <Link to={getDashboardLink()}>Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost">
+                <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
+              </Button>
+              <Button asChild>
+                <Link to={ROUTES.AUTH.REGISTER}>Join Now</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <div className="md:hidden flex items-center gap-2">
@@ -111,22 +136,35 @@ export function PublicNavbar() {
               </NavLink>
             ))}
             <div className="pt-3 border-t space-y-2">
-              <Button asChild variant="ghost" className="w-full">
-                <Link
-                  to={ROUTES.AUTH.LOGIN}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Log in
-                </Link>
-              </Button>
-              <Button asChild className="w-full">
-                <Link
-                  to={ROUTES.AUTH.REGISTER}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Join Now
-                </Link>
-              </Button>
+              {isAuthenticated ? (
+                <Button asChild className="w-full">
+                  <Link
+                    to={getDashboardLink()}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button asChild variant="ghost" className="w-full">
+                    <Link
+                      to={ROUTES.AUTH.LOGIN}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Log in
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full">
+                    <Link
+                      to={ROUTES.AUTH.REGISTER}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Join Now
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </div>

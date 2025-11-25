@@ -1,54 +1,15 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/auth.store";
-import { authService } from "../api/auth.service";
 import { ROUTES } from "@/shared/config/routes";
 import { UserRole } from "@/features/users/types/user.types";
-import { Spinner } from "@/shared/components/loading/Spinner";
 
 interface ProtectedRouteProps {
   allowedRoles?: UserRole[];
 }
 
 export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { isAuthenticated, user, login, logout, setAccessToken } =
-    useAuthStore();
-  const [isLoading, setIsLoading] = useState(!isAuthenticated);
+  const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
-
-  useEffect(() => {
-    const initAuth = async () => {
-      if (!isAuthenticated) {
-        try {
-          const { access_token: accessToken } =
-            await authService.refreshToken();
-          if (!accessToken) {
-            throw new Error("No access token found");
-          }
-          setAccessToken(accessToken);
-          const userData = await authService.me();
-          login(accessToken, userData);
-        } catch (error) {
-          console.error("Error initializing authentication:", error);
-          logout();
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setIsLoading(false);
-      }
-    };
-
-    initAuth();
-  }, [isAuthenticated, login, logout, setAccessToken]);
-
-  if (isLoading) {
-    return (
-      <div className="h-screen w-full flex items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
 
   if (!isAuthenticated) {
     return (

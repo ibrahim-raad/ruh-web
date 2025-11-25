@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
 import { toast } from "sonner";
@@ -26,8 +26,26 @@ export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
-  const logout = useAuthStore((state) => state.logout);
+  const { login, logout, isAuthenticated, user } = useAuthStore();
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      switch (user.role) {
+        case UserRole.ADMIN:
+          navigate(ROUTES.ADMIN.ADMINS);
+          break;
+        case UserRole.THERAPIST:
+          navigate(ROUTES.THERAPIST.DASHBOARD);
+          break;
+        case UserRole.PATIENT:
+          logout();
+          navigate(ROUTES.DOWNLOAD_APP);
+          break;
+        default:
+          navigate(ROUTES.HOME);
+      }
+    }
+  }, [isAuthenticated, user, navigate, logout]);
 
   const {
     register,
@@ -48,21 +66,6 @@ export function LoginForm() {
       login(response.tokens.access_token!, response.user);
 
       toast.success("Login successful!");
-
-      switch (response.user.role) {
-        case UserRole.ADMIN:
-          navigate(ROUTES.ADMIN.ADMINS);
-          break;
-        case UserRole.THERAPIST:
-          navigate(ROUTES.THERAPIST.DASHBOARD);
-          break;
-        case UserRole.PATIENT:
-          logout();
-          navigate(ROUTES.DOWNLOAD_APP);
-          break;
-        default:
-          navigate(ROUTES.HOME);
-      }
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error("Login failed:", error);
