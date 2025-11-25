@@ -63,16 +63,10 @@ export default function AdminLayout() {
           label="Specializations"
           icon={<BookOpen className="h-5 w-5" />}
         />
-        <NavGroup
+        <NavItem
+          to={ROUTES.ADMIN.QUESTIONNAIRES}
           label="Questionnaires"
-          icon={<BookOpen className="h-5 w-5" />}
-          items={[
-            {
-              to: ROUTES.ADMIN.QUESTIONNAIRES,
-              label: "Questionnaires",
-              icon: <FileQuestion className="h-5 w-5" />,
-            },
-          ]}
+          icon={<FileQuestion className="h-5 w-5" />}
         />
         <NavGroup
           label="Localization"

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,8 +26,10 @@ import {
 import { createQuestionnaireColumns } from "@/features/questionnaires/components/columns";
 import { QuestionnaireForm } from "@/features/questionnaires/components/QuestionnaireForm";
 import { useAuthStore } from "@/features/auth/store/auth.store";
+import { ROUTES } from "@/shared/config/routes";
 
 export default function QuestionnairesPage() {
+  const navigate = useNavigate();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingQuestionnaire, setEditingQuestionnaire] =
     useState<Questionnaire | null>(null);
@@ -85,9 +88,18 @@ export default function QuestionnairesPage() {
     }
   };
 
+  const handleBuilder = (questionnaire: Questionnaire) => {
+    const path = ROUTES.ADMIN.QUESTIONNAIRE_BUILDER.replace(
+      ":id",
+      questionnaire.id
+    );
+    navigate(path);
+  };
+
   const columns = createQuestionnaireColumns({
     onEdit: setEditingQuestionnaire,
     onDelete: setDeletingQuestionnaire,
+    onBuilder: handleBuilder,
     user: user!,
   });
 

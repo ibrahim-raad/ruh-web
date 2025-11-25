@@ -10,20 +10,21 @@ import type {
   Questionnaire,
   QuestionnaireType,
 } from "../types/questionnaire.types";
-import { CheckCircle, XCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CheckCircle, FileText, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { User } from "@/features/users/types/user.types";
 
 interface CreateColumnsOptions {
   onEdit: (questionnaire: Questionnaire) => void;
   onDelete: (questionnaire: Questionnaire) => void;
+  onBuilder: (questionnaire: Questionnaire) => void;
   user: User;
 }
 
 export function createQuestionnaireColumns({
   onEdit,
   onDelete,
+  onBuilder,
   user,
 }: CreateColumnsOptions): ColumnDef<Questionnaire>[] {
   return [
@@ -154,9 +155,13 @@ export function createQuestionnaireColumns({
         const questionnaire = row.original;
         return (
           <div className="text-right flex items-center justify-end gap-2">
-            <Button variant="ghost" size="icon" asChild></Button>
             <DataTableRowActions
               actions={[
+                {
+                  label: "Builder",
+                  onClick: () => onBuilder(questionnaire),
+                  icon: <FileText className="mr-2 h-4 w-4" />,
+                },
                 createEditAction(() => onEdit(questionnaire)),
                 createDeleteAction(() => onDelete(questionnaire)),
               ]}
