@@ -51,7 +51,7 @@ export function LoginForm() {
 
       switch (response.user.role) {
         case UserRole.ADMIN:
-          navigate(ROUTES.ADMIN.OVERVIEW);
+          navigate(ROUTES.ADMIN.ADMINS);
           break;
         case UserRole.THERAPIST:
           navigate(ROUTES.THERAPIST.DASHBOARD);
