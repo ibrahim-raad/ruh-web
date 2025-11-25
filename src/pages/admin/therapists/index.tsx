@@ -1,11 +1,17 @@
+import { useState } from "react";
 import { DataTable } from "@/shared/components/data-table/DataTable";
 import { EmptyState } from "@/shared/components/empty-state/EmptyState";
 import { useTableState } from "@/shared/hooks/useTableState";
 import { useTherapists } from "@/features/therapists/api/useTherapists";
 import { createTherapistColumns } from "@/features/therapists/components/columns";
+import { TherapistProfileDrawer } from "@/features/therapists/components/TherapistProfileDrawer";
+import type { Therapist } from "@/features/therapists/types/therapist.types";
 import { HeartPlus } from "lucide-react";
 
 export default function TherapistsPage() {
+  const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(
+    null
+  );
   const tableState = useTableState({
     initialLimit: 20,
     searchField: "name",
@@ -13,7 +19,9 @@ export default function TherapistsPage() {
 
   const { data, isLoading } = useTherapists(tableState.queryParams);
 
-  const columns = createTherapistColumns();
+  const columns = createTherapistColumns({
+    onViewProfile: setSelectedTherapist,
+  });
 
   if (!isLoading && data?.data?.length === 0 && !tableState.search) {
     return (
@@ -60,6 +68,12 @@ export default function TherapistsPage() {
         onLimitChange={tableState.setLimit}
         onSortChange={tableState.setSort}
         emptyMessage="No therapists found."
+      />
+
+      <TherapistProfileDrawer
+        open={!!selectedTherapist}
+        onOpenChange={(open) => !open && setSelectedTherapist(null)}
+        therapist={selectedTherapist}
       />
     </div>
   );

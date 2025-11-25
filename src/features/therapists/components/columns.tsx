@@ -2,8 +2,18 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { DataTableColumnHeader } from "@/shared/components/data-table/DataTableColumnHeader";
 import type { Therapist } from "../types/therapist.types";
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
 
-export function createTherapistColumns(): ColumnDef<Therapist>[] {
+interface CreateColumnsOptions {
+  onViewProfile?: (therapist: Therapist) => void;
+}
+
+export function createTherapistColumns(
+  options: CreateColumnsOptions = {}
+): ColumnDef<Therapist>[] {
+  const { onViewProfile } = options;
+
   return [
     {
       accessorKey: "user.full_name",
@@ -63,6 +73,24 @@ export function createTherapistColumns(): ColumnDef<Therapist>[] {
         return (
           <div className="text-sm text-muted-foreground whitespace-nowrap">
             {format(new Date(date), "MMM dd, yyyy")}
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        if (!onViewProfile) return null;
+        return (
+          <div className="flex justify-end">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onViewProfile(row.original)}
+            >
+              <User className="mr-2 h-4 w-4" />
+              View Profile
+            </Button>
           </div>
         );
       },
