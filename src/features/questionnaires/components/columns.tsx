@@ -13,15 +13,18 @@ import type {
 import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import type { User } from "@/features/users/types/user.types";
 
 interface CreateColumnsOptions {
   onEdit: (questionnaire: Questionnaire) => void;
   onDelete: (questionnaire: Questionnaire) => void;
+  user: User;
 }
 
 export function createQuestionnaireColumns({
   onEdit,
   onDelete,
+  user,
 }: CreateColumnsOptions): ColumnDef<Questionnaire>[] {
   return [
     {
@@ -82,6 +85,28 @@ export function createQuestionnaireColumns({
             <CheckCircle className="h-4 w-4 text-green-500" />
           ) : (
             <XCircle className="h-4 w-4 text-red-500" />
+          )}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "created_by",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          title="Created By"
+          isSorted={column.getIsSorted()}
+          onSort={() => column.toggleSorting()}
+          align="center"
+        />
+      ),
+      cell: ({ row }) => (
+        <div className="font-medium text-center">
+          {row.original.created_by_id === user?.id ? (
+            <Badge variant="secondary">You</Badge>
+          ) : (
+            <div className="font-medium text-center">
+              {row.original.created_by?.full_name ?? "-"}
+            </div>
           )}
         </div>
       ),

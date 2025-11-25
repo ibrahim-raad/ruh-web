@@ -24,6 +24,7 @@ import {
 } from "@/features/questionnaires/api/useQuestionnaires";
 import { createQuestionnaireColumns } from "@/features/questionnaires/components/columns";
 import { QuestionnaireForm } from "@/features/questionnaires/components/QuestionnaireForm";
+import { useAuthStore } from "@/features/auth/store/auth.store";
 
 export default function QuestionnairesPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -35,7 +36,12 @@ export default function QuestionnairesPage() {
   const tableState = useTableState({
     initialLimit: 20,
     searchField: "title",
+    initialFilters: {
+      with_created_by: "true",
+    },
   });
+
+  const { user } = useAuthStore();
 
   const { data, isLoading } = useQuestionnaires(tableState.queryParams);
 
@@ -82,6 +88,7 @@ export default function QuestionnairesPage() {
   const columns = createQuestionnaireColumns({
     onEdit: setEditingQuestionnaire,
     onDelete: setDeletingQuestionnaire,
+    user: user!,
   });
 
   if (!isLoading && data?.data?.length === 0 && !tableState.search) {
