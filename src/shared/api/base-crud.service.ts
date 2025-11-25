@@ -65,5 +65,34 @@ export function createCrudService<
     async bulkDelete(ids: string[]): Promise<void> {
       await api.post(`${pathPrefix}${resourcePath}/bulk-delete`, { ids });
     },
+
+    async uploadFile(
+      file: File,
+      suffixPath: string,
+      method: "POST" | "PATCH" = "POST"
+    ): Promise<T> {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const url = `${pathPrefix}${resourcePath}${suffixPath}`;
+
+      const response =
+        method === "POST"
+          ? await api.post(url, formData, config)
+          : await api.patch(url, formData, config);
+
+      return response.data;
+    },
+
+    async deleteFile(suffixPath: string): Promise<T> {
+      const url = `${pathPrefix}${resourcePath}${suffixPath}`;
+      const response = await api.delete<T>(url);
+      return response.data;
+    },
   };
 }

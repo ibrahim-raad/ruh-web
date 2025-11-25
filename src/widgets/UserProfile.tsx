@@ -1,15 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { User } from "lucide-react";
-
-// TODO: Replace with actual user type from auth context
-type UserData = {
-  name: string;
-  email: string;
-  avatar: string | null;
-};
+import type { User } from "@/features/users/types/user.types";
+import { User as UserIcon } from "lucide-react";
 
 interface UserProfileProps {
-  user: UserData;
+  user: User;
   onClick?: () => void;
 }
 
@@ -20,18 +14,20 @@ export function UserProfile({ user, onClick }: UserProfileProps) {
       className="flex items-center gap-2 px-2 hover:bg-accent"
       onClick={onClick}
     >
-      {user.avatar ? (
+      {user.profile_url ? (
         <img
-          src={user.avatar}
-          alt={user.name}
+          src={`${import.meta.env.VITE_API_URL}${user.profile_url}`}
+          alt={user.full_name}
           className="h-8 w-8 rounded-full object-cover border border-border"
         />
       ) : (
         <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center border border-border">
-          <User className="h-4 w-4 text-primary" />
+          <UserIcon className="h-4 w-4 text-primary" />
         </div>
       )}
-      <span className="text-sm font-medium hidden md:inline">{user.name}</span>
+      <span className="text-sm font-medium hidden md:inline">
+        {user.full_name}
+      </span>
     </Button>
   );
 }

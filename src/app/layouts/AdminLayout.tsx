@@ -145,16 +145,7 @@ export default function AdminLayout() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            {user && (
-              <UserProfile
-                user={{
-                  name: user.full_name,
-                  email: user.email,
-                  avatar: user.profile_url || null,
-                }}
-                onClick={handleProfileClick}
-              />
-            )}
+            {user && <UserProfile user={user} onClick={handleProfileClick} />}
           </div>
         </header>
 
