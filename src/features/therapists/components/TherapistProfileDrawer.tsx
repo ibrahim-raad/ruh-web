@@ -34,7 +34,7 @@ export function TherapistProfileDrawer({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[400px] sm:w-[600px] p-0 flex flex-col">
+      <SheetContent className="w-[400px] sm:w-[800px] sm:max-w-[800px] p-0 flex flex-col">
         <SheetHeader className="p-6 pb-0">
           <SheetTitle>Therapist Profile</SheetTitle>
           <SheetDescription>
