@@ -11,7 +11,8 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { isAuthenticated, user, login, logout } = useAuthStore();
+  const { isAuthenticated, user, login, logout, setAccessToken } =
+    useAuthStore();
   const [isLoading, setIsLoading] = useState(!isAuthenticated);
   const location = useLocation();
 
@@ -24,6 +25,7 @@ export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
           if (!accessToken) {
             throw new Error("No access token found");
           }
+          setAccessToken(accessToken);
           const userData = await authService.me();
           login(accessToken, userData);
         } catch (error) {
@@ -38,7 +40,7 @@ export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     };
 
     initAuth();
-  }, [isAuthenticated, login, logout]);
+  }, [isAuthenticated, login, logout, setAccessToken]);
 
   if (isLoading) {
     return (

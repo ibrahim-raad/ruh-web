@@ -4,7 +4,6 @@ import { useAuthStore } from "@/features/auth/store/auth.store";
 
 import { authService } from "@/features/auth/api/auth.service";
 import { ROUTES } from "../config/routes";
-import { useNavigate } from "react-router-dom";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -49,7 +48,6 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
-    const navigate = useNavigate();
 
     if (
       error.response?.status === 401 &&
@@ -86,7 +84,7 @@ api.interceptors.response.use(
       } catch (err) {
         processQueue(err, null);
         useAuthStore.getState().logout();
-        navigate(ROUTES.AUTH.LOGIN);
+        window.location.href = ROUTES.AUTH.LOGIN;
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
