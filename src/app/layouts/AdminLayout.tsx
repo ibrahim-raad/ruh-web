@@ -60,11 +60,6 @@ export default function AdminLayout() {
           icon={<Users className="h-5 w-5" />}
         />
         <NavItem
-          to={ROUTES.ADMIN.SPECIALIZATIONS}
-          label="Specializations"
-          icon={<BookOpen className="h-5 w-5" />}
-        />
-        <NavItem
           to={ROUTES.ADMIN.PATIENTS}
           label="Patients"
           icon={<UserRound className="h-5 w-5" />}
@@ -92,6 +87,11 @@ export default function AdminLayout() {
               to: ROUTES.ADMIN.LANGUAGES,
               label: "Languages",
               icon: <Languages className="h-5 w-5" />,
+            },
+            {
+              to: ROUTES.ADMIN.SPECIALIZATIONS,
+              label: "Specializations",
+              icon: <BookOpen className="h-5 w-5" />,
             },
           ]}
         />
