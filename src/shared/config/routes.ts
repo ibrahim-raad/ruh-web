@@ -30,6 +30,7 @@ export const ROUTES = {
     LANGUAGES: "/admin/languages",
     SPECIALIZATIONS: "/admin/specializations",
     ADMINS: "/admin/admins",
+    QUESTIONNAIRES: "/admin/questionnaires",
   },
 
   // Therapist routes

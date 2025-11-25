@@ -35,6 +35,10 @@ const AdminSpecializationsPage = lazy(
   () => import("@/pages/admin/specializations")
 );
 const AdminAdminsPage = lazy(() => import("@/pages/admin/admins"));
+const AdminQuestionnairesPage = lazy(
+  () => import("@/pages/admin/questionnaires")
+);
+
 // Error pages
 const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
 const ForbiddenPage = lazy(() => import("@/pages/errors/Forbidden"));
@@ -96,6 +100,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN.ADMINS,
             element: <AdminAdminsPage />,
+          },
+          {
+            path: ROUTES.ADMIN.QUESTIONNAIRES,
+            element: <AdminQuestionnairesPage />,
           },
         ],
       },

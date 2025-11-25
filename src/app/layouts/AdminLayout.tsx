@@ -11,6 +11,7 @@ import {
   Menu,
   ChevronDown,
   ChevronRight,
+  FileQuestion,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -19,10 +20,12 @@ import { useAuthStore } from "@/features/auth/store/auth.store";
 import { authService } from "@/features/auth/api/auth.service";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { ProfileDialog } from "@/widgets/ProfileDialog";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -36,9 +39,7 @@ export default function AdminLayout() {
   };
 
   const handleProfileClick = () => {
-    // TODO: Navigate to profile page when implemented
-    // navigate(ROUTES.ADMIN.PROFILE);
-    console.log("Navigate to profile");
+    setIsProfileOpen(true);
   };
 
   const SidebarContent = () => (
@@ -62,7 +63,17 @@ export default function AdminLayout() {
           label="Specializations"
           icon={<BookOpen className="h-5 w-5" />}
         />
-
+        <NavGroup
+          label="Questionnaires"
+          icon={<BookOpen className="h-5 w-5" />}
+          items={[
+            {
+              to: ROUTES.ADMIN.QUESTIONNAIRES,
+              label: "Questionnaires",
+              icon: <FileQuestion className="h-5 w-5" />,
+            },
+          ]}
+        />
         <NavGroup
           label="Localization"
           icon={<Globe className="h-5 w-5" />}
@@ -151,6 +162,8 @@ export default function AdminLayout() {
         <main className="flex-1 p-4 md:p-6">
           <Outlet />
         </main>
+
+        <ProfileDialog open={isProfileOpen} onOpenChange={setIsProfileOpen} />
       </div>
     </div>
   );
