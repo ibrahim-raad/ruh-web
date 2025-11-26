@@ -1,8 +1,16 @@
 import { createCrudService } from "@/shared/api/base-crud.service";
 import { api } from "@/shared/api/client";
-import type { Therapist } from "../types/therapist.types";
+import type {
+  CreateTherapistDto,
+  Therapist,
+  UpdateTherapistDto,
+} from "../types/therapist.types";
 
-const baseService = createCrudService<Therapist>("/therapists");
+const baseService = createCrudService<
+  Therapist,
+  CreateTherapistDto,
+  UpdateTherapistDto
+>("/therapists");
 
 export const therapistsService = {
   ...baseService,
