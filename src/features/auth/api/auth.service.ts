@@ -1,6 +1,6 @@
 import { api } from "@/shared/api/client";
 import type { RefreshTokenResponse } from "../types/auth.types";
-import type { LoginResponse } from "../types/auth.types";
+import type { LoginResponse, RegisterDto } from "../types/auth.types";
 import type { User } from "@/features/users/types/user.types";
 
 export interface LoginCredentials {
@@ -17,6 +17,14 @@ export const authService = {
     const response = await api.post<LoginResponse>(
       `${apiVersion}/auth/login`,
       credentials
+    );
+    return response.data;
+  },
+
+  register: async (data: RegisterDto): Promise<LoginResponse> => {
+    const response = await api.post<LoginResponse>(
+      `${apiVersion}/auth/register`,
+      data
     );
     return response.data;
   },

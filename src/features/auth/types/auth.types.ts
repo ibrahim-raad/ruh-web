@@ -1,4 +1,4 @@
-import type { User } from "@/features/users/types/user.types";
+import type { User, UserRole } from "@/features/users/types/user.types";
 
 export interface LoginResponse {
   tokens: Tokens;
@@ -12,4 +12,11 @@ export interface Tokens {
 
 export interface RefreshTokenResponse {
   access_token: string;
+}
+
+export interface RegisterDto {
+  email: string;
+  password: string;
+  full_name: string;
+  role: UserRole;
 }
