@@ -19,22 +19,8 @@ import {
 import { UserGender, UserRole } from "@/features/users/types/user.types";
 import { useCountries } from "@/features/countries/api/useCountries";
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { useDebounce } from "@/shared/hooks/useDebounce";
+import { SearchableSelect } from "@/shared/components/SearchableSelect";
 
 const createAdminSchema = z.object({
   full_name: z
@@ -89,7 +75,6 @@ export function AdminForm({
 }: AdminFormProps) {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
-  const [open, setOpen] = useState(false);
 
   const { data: countries } = useCountries({
     limit: 100,
@@ -287,57 +272,21 @@ export function AdminForm({
           <Label htmlFor="country_id">
             Country <span className="text-destructive">*</span>
           </Label>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className={cn(
-                  "justify-between",
-                  !selectedCountryId && "text-muted-foreground"
-                )}
-                disabled={isLoading}
-              >
-                {selectedCountry ? selectedCountry.name : "Select country"}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-0" align="start">
-              <Command shouldFilter={false}>
-                <CommandInput
-                  placeholder="Search country..."
-                  value={search}
-                  onValueChange={setSearch}
-                />
-                <CommandList>
-                  <CommandEmpty>No country found.</CommandEmpty>
-                  <CommandGroup>
-                    {countries?.data.map((country) => (
-                      <CommandItem
-                        key={country.id}
-                        value={country.name}
-                        onSelect={() => {
-                          setValue("country_id", country.id);
-                          setOpen(false);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            selectedCountryId === country.id
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                        {country.name}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
+          <SearchableSelect
+            value={selectedCountryId}
+            onChange={(val) => setValue("country_id", val)}
+            options={
+              countries?.data.map((country) => ({
+                label: country.name,
+                value: country.id,
+              })) || []
+            }
+            onSearch={setSearch}
+            placeholder="Select country"
+            searchPlaceholder="Search country..."
+            disabled={isLoading}
+            selectedLabel={selectedCountry?.name}
+          />
           {errors.country_id && (
             <p className="text-sm text-destructive">
               {errors.country_id.message}
