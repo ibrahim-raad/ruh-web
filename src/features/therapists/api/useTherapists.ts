@@ -1,8 +1,17 @@
 import { createCrudHooks } from "@/shared/hooks/useCrudQuery";
 import { therapistsService } from "./therapists.service";
-import type { Therapist } from "../types/therapist.types";
+import type {
+  CreateTherapistDto,
+  Therapist,
+  UpdateTherapistDto,
+} from "../types/therapist.types";
+import { useQuery } from "@tanstack/react-query";
 
-const therapistHooks = createCrudHooks<Therapist>({
+const therapistHooks = createCrudHooks<
+  Therapist,
+  CreateTherapistDto,
+  UpdateTherapistDto
+>({
   queryKey: "therapists",
   service: therapistsService,
   messages: {
@@ -21,3 +30,8 @@ export const useCreateTherapist = therapistHooks.useCreate;
 export const useUpdateTherapist = therapistHooks.useUpdate;
 export const useDeleteTherapist = therapistHooks.useDelete;
 export const useBulkDeleteTherapists = therapistHooks.useBulkDelete;
+export const useTherapistMe = () =>
+  useQuery({
+    queryKey: ["therapist"],
+    queryFn: () => therapistsService.getMe(),
+  });
