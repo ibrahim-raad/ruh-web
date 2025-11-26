@@ -1,6 +1,6 @@
 import type { Currency } from "@/features/currencies/types/currency.types";
 import type { Specialization } from "@/features/specializations/types/specialization.types";
-import type { User } from "@/features/users/types/user.types";
+import type { CreateUserDto, User } from "@/features/users/types/user.types";
 import type { BaseEntity } from "@/shared/types/api.types";
 
 export interface Therapist extends BaseEntity {
@@ -27,8 +27,19 @@ export enum PayoutMethodStatus {
   REJECTED = "REJECTED",
 }
 
-export type CreateTherapistDto = Omit<Therapist, keyof BaseEntity>;
+export type CreateTherapistDto = CreateUserDto & {
+  bio: string;
+  years_of_experience: number;
+  rate_per_hour: number;
+  currency_id: string;
+  is_psychiatrist: boolean;
+  license_number: string;
+  license_expiration_date: Date;
+  payment_provider_account_id: string;
+  payout_method_status: PayoutMethodStatus;
+};
 
 export type UpdateTherapistDto = Partial<CreateTherapistDto> & {
   version: number;
+  therapist_version: number;
 };
