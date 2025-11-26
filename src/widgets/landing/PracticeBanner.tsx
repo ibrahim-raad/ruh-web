@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/shared/config/routes";
 import { Link } from "react-router-dom";
 
 export function PracticeBanner() {
@@ -15,7 +16,7 @@ export function PracticeBanner() {
           </p>
         </div>
         <Button asChild variant="secondary" size="lg" className="shrink-0">
-          <Link to="/therapist/apply">Join as Therapist</Link>
+          <Link to={ROUTES.THERAPIST.ONBOARDING.ROOT}>Join as Therapist</Link>
         </Button>
       </div>
     </section>

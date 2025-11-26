@@ -93,7 +93,7 @@ export function PublicNavbar() {
                 <Link to={ROUTES.AUTH.LOGIN}>Log in</Link>
               </Button>
               <Button asChild>
-                <Link to={ROUTES.AUTH.REGISTER}>Join Now</Link>
+                <Link to={ROUTES.THERAPIST.ONBOARDING.ROOT}>Join Now</Link>
               </Button>
             </>
           )}
@@ -157,7 +157,7 @@ export function PublicNavbar() {
                   </Button>
                   <Button asChild className="w-full">
                     <Link
-                      to={ROUTES.AUTH.REGISTER}
+                      to={ROUTES.THERAPIST.ONBOARDING.ROOT}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Join Now

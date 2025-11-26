@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/shared/config/routes";
 import { Link } from "react-router-dom";
 
 export function Hero() {
@@ -23,10 +24,15 @@ export function Hero() {
         </p>
         <div className="flex gap-3">
           <Button asChild>
-            <Link to="/auth/register">Start Your Journey</Link>
+            <Link
+              to={ROUTES.FOR_PATIENTS}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              Start Your Journey
+            </Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link to="/therapist/apply">Join as Therapist</Link>
+            <Link to={ROUTES.THERAPIST.ONBOARDING.ROOT}>Join as Therapist</Link>
           </Button>
         </div>
       </div>

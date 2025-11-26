@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/shared/config/routes";
 import { Link } from "react-router-dom";
 
 export function FinalCTA() {
@@ -9,10 +10,15 @@ export function FinalCTA() {
       </h2>
       <div className="flex items-center justify-center gap-3">
         <Button asChild variant="secondary">
-          <Link to="/auth/register?role=patient">Join as Patient</Link>
+          <Link
+            to={ROUTES.FOR_PATIENTS}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            Join as Patient
+          </Link>
         </Button>
         <Button asChild>
-          <Link to="/therapist/apply">Join as Therapist</Link>
+          <Link to={ROUTES.THERAPIST.ONBOARDING.ROOT}>Join as Therapist</Link>
         </Button>
       </div>
     </section>

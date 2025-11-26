@@ -19,7 +19,9 @@ export function TherapistsHero() {
         <div className="space-y-4">
           <div className="flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <Link to={ROUTES.THERAPIST.APPLY}>Join as Therapist</Link>
+              <Link to={ROUTES.THERAPIST.ONBOARDING.ROOT}>
+                Join as Therapist
+              </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link to={ROUTES.AUTH.LOGIN}>Sign In</Link>

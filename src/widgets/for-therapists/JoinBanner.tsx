@@ -38,7 +38,7 @@ export function JoinBanner() {
 
         <div className="shrink-0">
           <Button asChild size="lg">
-            <Link to={ROUTES.THERAPIST.APPLY}>Join as Therapist</Link>
+            <Link to={ROUTES.THERAPIST.ONBOARDING.ROOT}>Join as Therapist</Link>
           </Button>
         </div>
       </div>
