@@ -6,6 +6,7 @@ import { ROUTES } from "@/shared/config/routes";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ProtectedRoute } from "@/features/auth/components/ProtectedRoute";
 import { UserRole } from "@/features/users/types/user.types";
+import TherapistLayout from "../layouts/TherapistLayout";
 
 // Public pages
 const LandingPage = lazy(() => import("@/pages/landing"));
@@ -139,7 +140,7 @@ const router = createBrowserRouter([
       // TODO: Create Therapist Layout and pages
       {
         path: ROUTES.THERAPIST.DASHBOARD,
-        element: <div>Therapist Dashboard (Coming Soon)</div>,
+        element: <TherapistLayout />,
       },
     ],
   },

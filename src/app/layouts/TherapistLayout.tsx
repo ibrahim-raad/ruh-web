@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
-import {
-  LogOut,
-  Coins,
-  Globe,
-  Languages,
-  BookOpen,
-  Users,
-  Menu,
-  FileQuestion,
-  UserRound,
-  HeartPlus,
-} from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
 import { UserProfile } from "@/widgets/UserProfile";
@@ -20,10 +9,8 @@ import { useAuthStore } from "@/features/auth/store/auth.store";
 import { authService } from "@/features/auth/api/auth.service";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ProfileDialog } from "@/widgets/ProfileDialog";
-import { NavItem } from "@/widgets/navbar/NavItem";
-import { NavGroup } from "@/widgets/navbar/NavGroup";
 
-export default function AdminLayout() {
+export default function TherapistLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -48,59 +35,11 @@ export default function AdminLayout() {
       {/* Logo */}
       <div className="h-16 flex items-center px-4 border-b">
         <img src="/logo.png" alt="Ruh Therapy" className="h-12" />
-        <span className="text-primary font-bold text-lg ml-2">Admin</span>
+        <span className="text-primary font-bold text-lg ml-2">Therapist</span>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {/* General Items */}
-        <NavItem
-          to={ROUTES.ADMIN.ADMINS}
-          label="Admins"
-          icon={<Users className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.PATIENTS}
-          label="Patients"
-          icon={<UserRound className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.THERAPISTS}
-          label="Therapists"
-          icon={<HeartPlus className="h-5 w-5" />}
-        />
-        <NavItem
-          to={ROUTES.ADMIN.QUESTIONNAIRES}
-          label="Questionnaires"
-          icon={<FileQuestion className="h-5 w-5" />}
-        />
-        <NavGroup
-          label="Localization"
-          icon={<Globe className="h-5 w-5" />}
-          items={[
-            {
-              to: ROUTES.ADMIN.COUNTRIES,
-              label: "Countries",
-              icon: <Globe className="h-5 w-5" />,
-            },
-            {
-              to: ROUTES.ADMIN.CURRENCIES,
-              label: "Currencies",
-              icon: <Coins className="h-5 w-5" />,
-            },
-            {
-              to: ROUTES.ADMIN.LANGUAGES,
-              label: "Languages",
-              icon: <Languages className="h-5 w-5" />,
-            },
-            {
-              to: ROUTES.ADMIN.SPECIALIZATIONS,
-              label: "Specializations",
-              icon: <BookOpen className="h-5 w-5" />,
-            },
-          ]}
-        />
-      </nav>
+      <nav className="flex-1 px-3 py-4 space-y-1">{/* General Items */}</nav>
 
       {/* Logout at bottom */}
       <div className="p-3 border-t">
