@@ -10,7 +10,6 @@ export const ROUTES = {
   // Auth routes
   AUTH: {
     LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
     FORGOT_PASSWORD: "/auth/forgot-password",
     RESET_PASSWORD: "/auth/reset-password",
     VERIFY_EMAIL: "/auth/verify-email",
@@ -44,7 +43,16 @@ export const ROUTES = {
     SESSIONS: "/therapist/sessions",
     AVAILABILITY: "/therapist/availability",
     EARNINGS: "/therapist/earnings",
-    APPLY: "/therapist/apply",
+    ONBOARDING: {
+      ROOT: "/therapist/onboarding",
+      WELCOME: "/therapist/onboarding/welcome",
+      PERSONAL_DETAILS: "/therapist/onboarding/personal-details",
+      PROFESSIONAL_INFO: "/therapist/onboarding/professional-info",
+      SETTINGS: "/therapist/onboarding/settings",
+      AVAILABILITY: "/therapist/onboarding/availability",
+      IDENTITY: "/therapist/onboarding/identity",
+      REVIEW: "/therapist/onboarding/review",
+    },
   },
 
   // Error pages
