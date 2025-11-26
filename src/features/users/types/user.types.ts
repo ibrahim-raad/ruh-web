@@ -1,6 +1,7 @@
 import type { BaseEntity } from "@/shared/types/api.types";
 
 import type { Country } from "@/features/countries/types/country.types";
+import type { Language } from "@/features/languages/types/language.types";
 
 export enum UserRole {
   ADMIN = "ADMIN",
@@ -34,8 +35,9 @@ export interface User extends BaseEntity {
   email_status: UserEmailStatus;
   country?: Country;
   country_id?: string;
-  date_of_birth?: string;
+  date_of_birth?: Date;
   profile_url?: string;
+  spoken_languages?: Language[];
 }
 
 export type CreateUserDto = Omit<User, keyof BaseEntity>;
