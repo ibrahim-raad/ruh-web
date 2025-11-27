@@ -114,7 +114,9 @@ export function createAdminColumns({
         />
       ),
       cell: ({ row }) => {
-        const date = row.original.user.date_of_birth as string;
+        const date = row.original.user.date_of_birth
+          ?.toISOString()
+          .split("T")[0];
         return (
           <div className="text-sm text-muted-foreground whitespace-nowrap">
             {date ? format(new Date(date), "MMM dd, yyyy") : "-"}
