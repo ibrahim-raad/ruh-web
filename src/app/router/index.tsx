@@ -53,11 +53,14 @@ const QuestionnaireResponsesPage = lazy(
 const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
 const ForbiddenPage = lazy(() => import("@/pages/errors/Forbidden"));
 const ServerErrorPage = lazy(() => import("@/pages/errors/ServerError"));
+// Global error
+const GlobalError = lazy(() => import("@/pages/errors/GlobalError"));
 
 const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
     element: <PublicLayout />,
+    errorElement: <GlobalError />,
     children: [
       { index: true, element: <LandingPage /> },
       { path: ROUTES.FOR_PATIENTS, element: <ForPatientsPage /> },
@@ -89,6 +92,7 @@ const router = createBrowserRouter([
   {
     path: ROUTES.ADMIN.ROOT,
     element: <ProtectedRoute allowedRoles={[UserRole.ADMIN]} />,
+    errorElement: <GlobalError />,
     children: [
       {
         element: <AdminLayout />,
@@ -136,6 +140,7 @@ const router = createBrowserRouter([
   {
     path: ROUTES.THERAPIST.ROOT,
     element: <ProtectedRoute allowedRoles={[UserRole.THERAPIST]} />,
+    errorElement: <GlobalError />,
     children: [
       // TODO: Create Therapist Layout and pages
       {
