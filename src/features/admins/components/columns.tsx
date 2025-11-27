@@ -114,12 +114,15 @@ export function createAdminColumns({
         />
       ),
       cell: ({ row }) => {
-        const date = row.original.user.date_of_birth
-          ?.toISOString()
-          .split("T")[0];
+        const dateVal = row.original.user.date_of_birth;
+        let value = "-";
+        if (dateVal) {
+          const date = new Date(dateVal);
+          value = format(date, "MMM dd, yyyy");
+        }
         return (
           <div className="text-sm text-muted-foreground whitespace-nowrap">
-            {date ? format(new Date(date), "MMM dd, yyyy") : "-"}
+            {value}
           </div>
         );
       },
