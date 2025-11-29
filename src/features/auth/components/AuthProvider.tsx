@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/auth.store";
 import { authService } from "../api/auth.service";
 import { Spinner } from "@/shared/components/loading/Spinner";
+import { UserRole } from "@/features/users/types/user.types";
+import { therapistsService } from "@/features/therapists/api/therapists.service";
+import { adminsService } from "@/features/admins/api/admins.service";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -23,7 +26,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (accessToken) {
           setAccessToken(accessToken);
           const user = await authService.me();
-          login(accessToken, user);
+
+          let therapist;
+          let admin;
+
+          if (user.role === UserRole.THERAPIST) {
+            try {
+              therapist = await therapistsService.getMe();
+            } catch (error) {
+              console.error("Failed to fetch therapist details", error);
+            }
+          } else if (user.role === UserRole.ADMIN) {
+            try {
+              admin = await adminsService.getMe();
+            } catch (error) {
+              console.error("Failed to fetch admin details", error);
+            }
+          }
+
+          login(accessToken, user, therapist, admin);
         } else {
           logout();
         }

@@ -14,6 +14,8 @@ import { useAuthStore } from "@/features/auth/store/auth.store";
 
 import { AxiosError } from "axios";
 import { UserRole } from "@/features/users/types/user.types";
+import { therapistsService } from "@/features/therapists/api/therapists.service";
+import { adminsService } from "@/features/admins/api/admins.service";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email"),
@@ -26,7 +28,8 @@ export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { login, logout, isAuthenticated, user } = useAuthStore();
+  const { login, logout, isAuthenticated, user, setAccessToken } =
+    useAuthStore();
 
   useEffect(() => {
     if (isAuthenticated && user) {
@@ -63,10 +66,37 @@ export function LoginForm() {
       if (!response.tokens.access_token) {
         throw new Error("No access token found");
       }
-      login(response.tokens.access_token!, response.user);
+      const fetchedUser = response.user;
+
+      setAccessToken(response.tokens.access_token);
+
+      let therapist;
+      let admin;
+
+      if (fetchedUser?.role === UserRole.THERAPIST) {
+        console.log("fetching therapist");
+        try {
+          therapist = await therapistsService.getMe();
+          console.log("therapist: ", therapist);
+        } catch (error) {
+          console.error("Failed to fetch therapist details", error);
+        }
+      } else if (fetchedUser?.role === UserRole.ADMIN) {
+        console.log("fetching admin");
+        try {
+          admin = await adminsService.getMe();
+          console.log("admin: ", admin);
+        } catch (error) {
+          console.error("Failed to fetch admin details", error);
+        }
+      }
+
+      login(response.tokens.access_token, fetchedUser, therapist, admin);
 
       toast.success("Login successful!");
     } catch (error) {
+      logout();
+
       if (error instanceof AxiosError) {
         console.error("Login failed:", error);
         toast.error(
