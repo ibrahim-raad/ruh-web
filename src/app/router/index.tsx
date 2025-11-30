@@ -53,6 +53,33 @@ const QuestionnaireResponsesPage = lazy(
 const NotFoundPage = lazy(() => import("@/pages/errors/NotFound"));
 const ForbiddenPage = lazy(() => import("@/pages/errors/Forbidden"));
 const ServerErrorPage = lazy(() => import("@/pages/errors/ServerError"));
+
+// Therapist pages
+const TherapistOnboardingLayout = lazy(
+  () => import("@/app/layouts/TherapistOnboardingLayout")
+);
+const OnboardingRoot = lazy(
+  () => import("@/pages/therapist/onboarding/OnboardingRoot")
+);
+const WelcomeStep = lazy(
+  () => import("@/pages/therapist/onboarding/WelcomeStep")
+);
+const PersonalDetailsStep = lazy(
+  () => import("@/pages/therapist/onboarding/PersonalDetailsStep")
+);
+const ProfessionalInfoStep = lazy(
+  () => import("@/pages/therapist/onboarding/ProfessionalInfoStep")
+);
+const SettingsStep = lazy(
+  () => import("@/pages/therapist/onboarding/SettingsStep")
+);
+const AvailabilityStep = lazy(
+  () => import("@/pages/therapist/onboarding/AvailabilityStep")
+);
+const IdentityStep = lazy(
+  () => import("@/pages/therapist/onboarding/IdentityStep")
+);
+
 // Global error
 const GlobalError = lazy(() => import("@/pages/errors/GlobalError"));
 
@@ -130,6 +157,51 @@ const router = createBrowserRouter([
           {
             path: ROUTES.ADMIN.QUESTIONNAIRE_RESPONSE_DETAIL,
             element: <ResponseDetailPage />,
+          },
+        ],
+      },
+    ],
+  },
+
+  // Therapist Onboarding
+  {
+    element: <TherapistOnboardingLayout />,
+    errorElement: <GlobalError />,
+    children: [
+      {
+        index: true,
+        element: <OnboardingRoot />,
+      },
+      {
+        path: ROUTES.THERAPIST.ONBOARDING.ROOT,
+        element: <OnboardingRoot />,
+      },
+      {
+        path: ROUTES.THERAPIST.ONBOARDING.WELCOME,
+        element: <WelcomeStep />,
+      },
+      {
+        element: <ProtectedRoute allowedRoles={[UserRole.THERAPIST]} />,
+        children: [
+          {
+            path: ROUTES.THERAPIST.ONBOARDING.PERSONAL_DETAILS,
+            element: <PersonalDetailsStep />,
+          },
+          {
+            path: ROUTES.THERAPIST.ONBOARDING.PROFESSIONAL_INFO,
+            element: <ProfessionalInfoStep />,
+          },
+          {
+            path: ROUTES.THERAPIST.ONBOARDING.SETTINGS,
+            element: <SettingsStep />,
+          },
+          {
+            path: ROUTES.THERAPIST.ONBOARDING.AVAILABILITY,
+            element: <AvailabilityStep />,
+          },
+          {
+            path: ROUTES.THERAPIST.ONBOARDING.IDENTITY,
+            element: <IdentityStep />,
           },
         ],
       },
