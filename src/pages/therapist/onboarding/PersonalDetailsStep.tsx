@@ -1,4 +1,4 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -22,38 +22,49 @@ import { userLanguagesService } from "@/features/languages/api/user-languages.se
 import { Checkbox } from "@/components/ui/checkbox";
 import { AxiosError } from "axios";
 import { useUpdateTherapist } from "@/features/therapists/api/useTherapists";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { SearchableSelect } from "@/shared/components/SearchableSelect";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 
-const personalDetailsSchema = z.object({
-  gender: z.enum(UserGender),
-  date_of_birth: z
-    .string()
-    .min(1, "Date of birth is required")
-    .refine((dateStr) => {
-      const date = new Date(dateStr);
-      const today = new Date();
-      const minDate = new Date(
-        today.getFullYear() - 23,
-        today.getMonth(),
-        today.getDate()
-      );
-      return date <= minDate;
-    }, "You must be at least 23 years old")
-    .refine((dateStr) => {
-      const date = new Date(dateStr);
-      const today = new Date();
-      const maxDate = new Date(
-        today.getFullYear() - 65,
-        today.getMonth(),
-        today.getDate()
-      );
-      return date >= maxDate;
-    }, "You must be less than 65 years old"),
-  country_id: z.string().min(1, "Country is required"),
-  language_ids: z.array(z.string()).min(1, "Select at least one language"),
-});
+const personalDetailsSchema = z
+  .object({
+    gender: z.enum(UserGender),
+    date_of_birth: z
+      .string()
+      .min(1, "Date of birth is required")
+      .refine((dateStr) => {
+        const date = new Date(dateStr);
+        const today = new Date();
+        const minDate = new Date(
+          today.getFullYear() - 23,
+          today.getMonth(),
+          today.getDate()
+        );
+        return date <= minDate;
+      }, "You must be at least 23 years old")
+      .refine((dateStr) => {
+        const date = new Date(dateStr);
+        const today = new Date();
+        const maxDate = new Date(
+          today.getFullYear() - 65,
+          today.getMonth(),
+          today.getDate()
+        );
+        return date >= maxDate;
+      }, "You must be less than 65 years old"),
+    country_id: z.string().min(1, "Country is required"),
+    language_ids: z.array(z.string()).min(1, "Select at least one language"),
+    primary_language_id: z.string().min(1, "Select a primary language"),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.language_ids.includes(data.primary_language_id)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Primary language must be one of the selected languages",
+        path: ["primary_language_id"],
+      });
+    }
+  });
 
 type PersonalDetailsFormValues = z.infer<typeof personalDetailsSchema>;
 
@@ -76,37 +87,57 @@ export default function PersonalDetailsStep() {
   const countries = countriesResponse?.data || [];
   const languages = languagesResponse?.data || [];
 
+  const defaultValues = useMemo(() => {
+    if (!therapist) return undefined;
+    const user = therapist.user;
+    const languageIds = user.spoken_languages?.map((l) => l.id) || [];
+
+    const primaryLanguage = user.spoken_languages?.find(
+      (l) => "is_primary" in l && l.is_primary === true
+    );
+
+    const primaryLanguageId = primaryLanguage
+      ? primaryLanguage.id
+      : languageIds.length > 0
+        ? languageIds[0]
+        : "";
+
+    return {
+      gender: user.gender,
+      country_id: user.country_id,
+      language_ids: languageIds,
+      primary_language_id: primaryLanguageId,
+      date_of_birth: user.date_of_birth
+        ? new Date(user.date_of_birth).toISOString().split("T")[0]
+        : undefined,
+    };
+  }, [therapist]);
+
   const {
     register,
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    setValue,
   } = useForm<PersonalDetailsFormValues>({
     resolver: zodResolver(personalDetailsSchema),
+    values: defaultValues as PersonalDetailsFormValues,
     defaultValues: {
-      language_ids: [],
+      language_ids: defaultValues?.language_ids || [],
+      primary_language_id: defaultValues?.primary_language_id || "",
+      gender: defaultValues?.gender || undefined,
     },
   });
 
-  useEffect(() => {
-    if (therapist) {
-      const user = therapist.user;
-      const defaultValues: Partial<PersonalDetailsFormValues> = {
-        gender: user.gender !== UserGender.UNKNOWN ? user.gender : undefined,
-        country_id: user.country_id,
-        language_ids: user.spoken_languages?.map((l) => l.id) || [],
-      };
+  const selectedLanguageIds = useWatch({
+    control,
+    name: "language_ids",
+    defaultValue: [],
+  });
 
-      if (user.date_of_birth) {
-        defaultValues.date_of_birth = new Date(user.date_of_birth)
-          .toISOString()
-          .split("T")[0];
-      }
-
-      reset(defaultValues);
-    }
-  }, [therapist, reset]);
+  const selectedLanguages = languages.filter((lang) =>
+    selectedLanguageIds.includes(lang.id)
+  );
 
   const onSubmit = async (data: PersonalDetailsFormValues) => {
     if (!therapist) {
@@ -130,10 +161,10 @@ export default function PersonalDetailsStep() {
       }
 
       await Promise.all(
-        data.language_ids.map((langId, index) =>
+        data.language_ids.map((langId) =>
           userLanguagesService.create({
             language_id: langId,
-            is_primary: index === 0, // TODO: Implement primary language selection
+            is_primary: langId === data.primary_language_id,
           })
         )
       );
@@ -167,7 +198,10 @@ export default function PersonalDetailsStep() {
               name="gender"
               control={control}
               render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
@@ -238,12 +272,20 @@ export default function PersonalDetailsStep() {
                     <div key={lang.id} className="flex items-center space-x-2">
                       <Checkbox
                         id={`lang-${lang.id}`}
-                        checked={field.value?.includes(lang.id)}
+                        checked={(field.value || []).includes(lang.id)}
                         onCheckedChange={(checked) => {
                           const current = field.value || [];
-                          const newValue = checked
-                            ? [...current, lang.id]
-                            : current.filter((id) => id !== lang.id);
+                          let newValue;
+                          if (checked) {
+                            newValue = [...current, lang.id];
+                            if (newValue.length === 1) {
+                              setValue("primary_language_id", lang.id);
+                            }
+                          } else {
+                            newValue = current.filter(
+                              (id: string) => id !== lang.id
+                            );
+                          }
                           field.onChange(newValue);
                         }}
                       />
@@ -262,6 +304,37 @@ export default function PersonalDetailsStep() {
           {errors.language_ids && (
             <p className="text-sm text-destructive">
               {errors.language_ids.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="primary_language_id">Primary Language</Label>
+          <Controller
+            name="primary_language_id"
+            control={control}
+            render={({ field }) => (
+              <Select
+                onValueChange={field.onChange}
+                value={field.value || ""}
+                disabled={selectedLanguages.length === 0}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select primary language" />
+                </SelectTrigger>
+                <SelectContent>
+                  {selectedLanguages.map((lang) => (
+                    <SelectItem key={lang.id} value={lang.id}>
+                      {lang.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.primary_language_id && (
+            <p className="text-sm text-destructive">
+              {errors.primary_language_id.message}
             </p>
           )}
         </div>
