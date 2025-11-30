@@ -106,7 +106,7 @@ export function AdminForm({
           email: "",
           password: "",
           admin_role: AdminRole.REVIEWER,
-          gender: UserGender.UNKNOWN,
+          gender: undefined,
           country_id: "",
           date_of_birth: "",
         },

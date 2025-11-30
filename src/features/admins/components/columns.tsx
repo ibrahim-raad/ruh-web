@@ -15,14 +15,12 @@ interface CreateColumnsOptions {
   onDelete: (admin: Admin) => void;
 }
 
-const getGenderBadgeColor = (gender: UserGender) => {
+const getGenderBadgeColor = (gender: UserGender | undefined) => {
   switch (gender) {
     case UserGender.MALE:
       return "bg-blue-100 text-blue-800 hover:bg-blue-200 border-blue-200";
     case UserGender.FEMALE:
       return "bg-pink-100 text-pink-800 hover:bg-pink-200 border-pink-200";
-    case UserGender.UNKNOWN:
-      return "text-muted-foreground border-muted";
     default:
       return "";
   }

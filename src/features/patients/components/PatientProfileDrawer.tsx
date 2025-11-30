@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/sheet";
 import { User as UserIcon } from "lucide-react";
 import type { Patient } from "@/features/patients/types/patient.types";
-import { UserGender } from "@/features/users/types/user.types";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
@@ -101,7 +100,7 @@ export function PatientProfileDrawer({
                     Preferred Therapist Gender
                   </span>
                   <Badge variant="outline">
-                    {patient.preferred_therapist_gender === UserGender.UNKNOWN
+                    {!patient.preferred_therapist_gender
                       ? "No Preference"
                       : patient.preferred_therapist_gender}
                   </Badge>

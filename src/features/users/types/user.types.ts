@@ -18,7 +18,6 @@ export enum UserStatus {
 export enum UserGender {
   MALE = "MALE",
   FEMALE = "FEMALE",
-  UNKNOWN = "UNKNOWN",
 }
 
 export enum UserEmailStatus {
@@ -31,13 +30,13 @@ export interface User extends BaseEntity {
   email: string;
   role: UserRole;
   status: UserStatus;
-  gender: UserGender;
+  gender?: UserGender;
   email_status: UserEmailStatus;
   country?: Country;
   country_id?: string;
   date_of_birth?: Date;
   profile_url?: string;
-  spoken_languages?: Language[];
+  spoken_languages?: (Language & { is_primary: boolean })[];
 }
 
 export type CreateUserDto = Omit<User, keyof BaseEntity>;
