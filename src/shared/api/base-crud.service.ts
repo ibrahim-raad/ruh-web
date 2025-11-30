@@ -7,7 +7,7 @@ import type {
 import { api } from "./client";
 import { createListQueryString } from "../utils/query-params";
 
-function transformPaginatedResponse<T>(
+export function transformPaginatedResponse<T>(
   backendResponse: BackendPaginatedResponse<T>,
   params: ListQueryParams
 ): PaginatedResponse<T> {
