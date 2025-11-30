@@ -5,6 +5,7 @@ import type {
   TherapistCertificate,
   UpdateTherapistCertificateDto,
 } from "../types/therapist-certificate.types";
+import { useQuery } from "@tanstack/react-query";
 
 const therapistCertificateHooks = createCrudHooks<
   TherapistCertificate,
@@ -33,3 +34,8 @@ export const useDeleteTherapistCertificate =
   therapistCertificateHooks.useDelete;
 export const useBulkDeleteTherapistsCertificates =
   therapistCertificateHooks.useBulkDelete;
+export const useMyCertificates = () =>
+  useQuery({
+    queryKey: ["therapists-certificates-mine"],
+    queryFn: () => therapistsCertificatesService.myCertificates(),
+  });

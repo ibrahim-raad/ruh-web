@@ -7,6 +7,7 @@ export interface TherapistAvailability extends BaseEntity {
   readonly day_of_week: DayOfWeek;
   readonly break_start_time: string;
   readonly break_end_time: string;
+  readonly is_active: boolean;
 }
 
 export enum DayOfWeek {

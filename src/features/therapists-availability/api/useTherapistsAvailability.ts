@@ -19,3 +19,5 @@ export const useUpdateTherapistAvailability =
   therapistAvailabilityHooks.useUpdate;
 export const useDeleteTherapistAvailability =
   therapistAvailabilityHooks.useDelete;
+export const useCreateTherapistAvailability =
+  therapistAvailabilityHooks.useCreate;
