@@ -17,7 +17,6 @@ const STEPS = [
     path: ROUTES.THERAPIST.ONBOARDING.IDENTITY,
     label: "Identity Verification",
   },
-  { path: ROUTES.THERAPIST.ONBOARDING.REVIEW, label: "Review" },
 ];
 
 export default function TherapistOnboardingLayout() {
