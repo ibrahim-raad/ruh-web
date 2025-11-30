@@ -13,20 +13,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
 import { toast } from "sonner";
-import {
-  useTherapistMe,
-  useUpdateTherapist,
-} from "@/features/therapists/api/useTherapists";
+import { useUpdateTherapist } from "@/features/therapists/api/useTherapists";
 import { useSpecializations } from "@/features/specializations/api/useSpecializations";
-import { useCreateTherapistCertificate } from "@/features/therapists-certificates/api/useTherapistsCertificates";
+import {
+  useCreateTherapistCertificate,
+  useMyCertificates,
+} from "@/features/therapists-certificates/api/useTherapistsCertificates";
 import { therapistsCertificatesService } from "@/features/therapists-certificates/api/therapists-certificates.service";
 import { therapistSpecializationsService } from "@/features/specializations/api/therapist-specializations.service";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { AxiosError } from "axios";
 import { FileUpload } from "@/shared/components/form/FileUpload";
+import { FileViewer } from "@/shared/components/FileViewer";
+import type { TherapistCertificate } from "@/features/therapists-certificates/types/therapist-certificate.types";
+import { useAuthStore } from "@/features/auth/store/auth.store";
 
 const professionalInfoSchema = z.object({
   years_of_experience: z.coerce.number().min(0, "Must be 0 or greater"),
@@ -50,11 +53,26 @@ const professionalInfoSchema = z.object({
         description: z.string().optional(),
         file: z
           .instanceof(File)
-          .refine((file) => file instanceof File, "File is required")
-          .optional(),
+          .optional()
+          .refine(
+            (file) => file instanceof File || file === undefined,
+            "File is required"
+          ),
+        existing_file_url: z.string().optional(),
       })
     )
-    .optional(),
+    .optional()
+    .superRefine((certificates, ctx) => {
+      certificates?.forEach((cert, index) => {
+        if (!cert.file && !cert.existing_file_url) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "File is required",
+            path: [index, "file"],
+          });
+        }
+      });
+    }),
 });
 
 type ProfessionalInfoFormValues = z.infer<typeof professionalInfoSchema>;
@@ -62,15 +80,38 @@ type ProfessionalInfoFormValues = z.infer<typeof professionalInfoSchema>;
 export default function ProfessionalInfoStep() {
   const navigate = useNavigate();
 
-  const { data: therapist } = useTherapistMe();
+  const { therapist } = useAuthStore();
   const updateTherapist = useUpdateTherapist();
   const createCertificate = useCreateTherapistCertificate();
+  const { data: defaultCertificatesResponse } = useMyCertificates();
+  const rawDefaultCertificates = defaultCertificatesResponse?.data;
 
   const { data: specializationsResponse } = useSpecializations({
     page: 1,
     limit: 100,
   });
   const specializations = specializationsResponse?.data || [];
+
+  const defaultValues = useMemo(() => {
+    const defaultCertificates = rawDefaultCertificates || [];
+
+    return {
+      years_of_experience: therapist?.years_of_experience || 0,
+      license_number: therapist?.license_number || "",
+      bio: therapist?.bio || "",
+      specialization_ids:
+        therapist?.specializations?.map((spec) => spec.id) || [],
+      certificates: defaultCertificates.map((cert: TherapistCertificate) => ({
+        title: cert.title,
+        issuer: cert.issuer,
+        issued_date: cert.issued_date
+          ? new Date(cert.issued_date).toISOString().split("T")[0]
+          : "",
+        file: undefined,
+        existing_file_url: cert.file_url,
+      })),
+    };
+  }, [therapist, rawDefaultCertificates]);
 
   const {
     register,
@@ -82,6 +123,7 @@ export default function ProfessionalInfoStep() {
     resolver: zodResolver(
       professionalInfoSchema
     ) as Resolver<ProfessionalInfoFormValues>,
+    values: defaultValues as ProfessionalInfoFormValues,
     defaultValues: {
       specialization_ids: [],
       certificates: [],
@@ -92,16 +134,6 @@ export default function ProfessionalInfoStep() {
     control,
     name: "certificates",
   });
-
-  useEffect(() => {
-    if (therapist) {
-      if (therapist.years_of_experience)
-        setValue("years_of_experience", therapist.years_of_experience);
-      if (therapist.license_number)
-        setValue("license_number", therapist.license_number);
-      if (therapist.bio) setValue("bio", therapist.bio);
-    }
-  }, [therapist, setValue]);
 
   const onSubmit = async (data: ProfessionalInfoFormValues) => {
     if (!therapist) {
@@ -136,6 +168,10 @@ export default function ProfessionalInfoStep() {
       if (data.certificates && data.certificates.length > 0) {
         await Promise.all(
           data.certificates.map(async (cert) => {
+            if (cert.existing_file_url && !cert.file) {
+              return;
+            }
+
             const newCert = await createCertificate.mutateAsync({
               title: cert.title,
               issuer: cert.issuer,
@@ -275,6 +311,7 @@ export default function ProfessionalInfoStep() {
                   issuer: "",
                   issued_date: "",
                   file: undefined,
+                  existing_file_url: "",
                 })
               }
             >
@@ -303,6 +340,7 @@ export default function ProfessionalInfoStep() {
                     <Input
                       {...register(`certificates.${index}.title`)}
                       placeholder="Certificate Name"
+                      disabled={!!field.existing_file_url}
                     />
                     {errors.certificates?.[index]?.title && (
                       <p className="text-sm text-destructive">
@@ -315,6 +353,7 @@ export default function ProfessionalInfoStep() {
                     <Input
                       {...register(`certificates.${index}.issuer`)}
                       placeholder="Issuing Organization"
+                      disabled={!!field.existing_file_url}
                     />
                     {errors.certificates?.[index]?.issuer && (
                       <p className="text-sm text-destructive">
@@ -327,6 +366,7 @@ export default function ProfessionalInfoStep() {
                     <Input
                       type="date"
                       {...register(`certificates.${index}.issued_date`)}
+                      disabled={!!field.existing_file_url}
                     />
                     {errors.certificates?.[index]?.issued_date && (
                       <p className="text-sm text-destructive">
@@ -334,13 +374,25 @@ export default function ProfessionalInfoStep() {
                       </p>
                     )}
                   </div>
-                  <FileUpload
-                    control={control}
-                    name={`certificates.${index}.file`}
-                    setValue={setValue}
-                    label="Certificate File"
-                    error={errors.certificates?.[index]?.file?.message}
-                  />
+
+                  {field.existing_file_url ? (
+                    <div className="space-y-2">
+                      <Label>Existing Certificate File</Label>
+                      <FileViewer
+                        src={field.existing_file_url}
+                        title={field.title}
+                        alt={`Certificate: ${field.title}`}
+                      />
+                    </div>
+                  ) : (
+                    <FileUpload
+                      control={control}
+                      name={`certificates.${index}.file`}
+                      setValue={setValue}
+                      label="Certificate File"
+                      error={errors.certificates?.[index]?.file?.message}
+                    />
+                  )}
                 </div>
               </CardContent>
             </Card>
