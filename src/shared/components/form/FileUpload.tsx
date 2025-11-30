@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UploadCloud, FileText, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import {
   type Control,
   type FieldValues,
@@ -32,9 +33,40 @@ export const FileUpload = <T extends FieldValues>({
     control,
     name,
   });
+  const [preview, setPreview] = useState<string | null>(null);
 
   const isFile = (value: unknown): value is File => {
     return value instanceof File;
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isFile(file) && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (isMounted && typeof reader.result === "string") {
+          setPreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      Promise.resolve().then(() => {
+        if (isMounted) setPreview(null);
+      });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [file]);
+
+  const handleRemove = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setValue(name, undefined as unknown as PathValue<T, Path<T>>, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
   return (
@@ -43,7 +75,15 @@ export const FileUpload = <T extends FieldValues>({
       <div className="relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded-lg border-muted-foreground/25 hover:bg-muted/50 transition-colors">
         {isFile(file) ? (
           <div className="flex items-center gap-2 text-sm z-10">
-            <FileText className="w-4 h-4 text-primary" />
+            {preview ? (
+              <img
+                src={preview}
+                alt="Preview"
+                className="h-10 w-10 object-cover rounded bg-muted"
+              />
+            ) : (
+              <FileText className="w-4 h-4 text-primary" />
+            )}
             <span className="font-medium truncate max-w-[200px]">
               {file.name}
             </span>
@@ -52,14 +92,7 @@ export const FileUpload = <T extends FieldValues>({
               variant="ghost"
               size="icon"
               className="h-6 w-6 rounded-full hover:bg-destructive/20 hover:text-destructive ml-2"
-              onClick={(e) => {
-                e.preventDefault();
-                setValue(name, undefined as unknown as PathValue<T, Path<T>>, {
-                  shouldValidate: true,
-                  shouldDirty: true,
-                  shouldTouch: true,
-                });
-              }}
+              onClick={handleRemove}
             >
               <X className="w-3 h-3" />
             </Button>
@@ -77,6 +110,7 @@ export const FileUpload = <T extends FieldValues>({
             </p>
           </div>
         )}
+
         {!isFile(file) && (
           <Input
             type="file"
