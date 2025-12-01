@@ -126,7 +126,7 @@ export default function TherapistLayout() {
         {/* Page Content */}
         <main className="flex-1 p-4 md:p-6">
           {!isVerified && (
-            <Alert variant="destructive" className="mb-6">
+            <Alert variant="warning" className="mb-6">
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>Verification Required</AlertTitle>
               <AlertDescription>
