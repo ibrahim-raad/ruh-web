@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config/routes";
-import { LogOut, Menu } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  LayoutDashboard,
+  Calendar,
+  Settings,
+  AlertTriangle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
 import { UserProfile } from "@/widgets/UserProfile";
@@ -9,6 +16,9 @@ import { useAuthStore } from "@/features/auth/store/auth.store";
 import { authService } from "@/features/auth/api/auth.service";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ProfileDialog } from "@/widgets/ProfileDialog";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { UserStatus, UserEmailStatus } from "@/features/users/types/user.types";
+import { NavItem } from "@/widgets/navbar/NavItem";
 
 export default function TherapistLayout() {
   const navigate = useNavigate();
@@ -30,6 +40,10 @@ export default function TherapistLayout() {
     setIsProfileOpen(true);
   };
 
+  const isVerified =
+    user?.email_status === UserEmailStatus.VERIFIED &&
+    user?.status === UserStatus.ACTIVE;
+
   const SidebarContent = () => (
     <div className="flex h-full flex-col bg-background">
       {/* Logo */}
@@ -39,7 +53,23 @@ export default function TherapistLayout() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">{/* General Items */}</nav>
+      <nav className="flex-1 px-3 py-4 space-y-1">
+        <NavItem
+          to={ROUTES.THERAPIST.DASHBOARD}
+          label="Dashboard"
+          icon={<LayoutDashboard className="h-4 w-4 mr-3" />}
+        />
+        <NavItem
+          to={ROUTES.THERAPIST.AVAILABILITY}
+          label="Availability"
+          icon={<Calendar className="h-4 w-4 mr-3" />}
+        />
+        <NavItem
+          to={ROUTES.THERAPIST.SETTINGS}
+          label="Settings"
+          icon={<Settings className="h-4 w-4 mr-3" />}
+        />
+      </nav>
 
       {/* Logout at bottom */}
       <div className="p-3 border-t">
@@ -95,6 +125,19 @@ export default function TherapistLayout() {
 
         {/* Page Content */}
         <main className="flex-1 p-4 md:p-6">
+          {!isVerified && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>Verification Required</AlertTitle>
+              <AlertDescription>
+                Your account is currently pending verification. You cannot
+                accept sessions or manage payments until your account is
+                verified by an administrator.
+                {user?.email_status !== UserEmailStatus.VERIFIED &&
+                  " Please also verify your email address."}
+              </AlertDescription>
+            </Alert>
+          )}
           <Outlet />
         </main>
 
