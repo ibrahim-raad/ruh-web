@@ -80,6 +80,17 @@ const IdentityStep = lazy(
   () => import("@/pages/therapist/onboarding/IdentityStep")
 );
 
+// Therapist Dashboard Pages
+const TherapistDashboardPage = lazy(
+  () => import("@/pages/therapist/dashboard/index")
+);
+const TherapistSettingsPage = lazy(
+  () => import("@/pages/therapist/dashboard/SettingsPage")
+);
+const TherapistAvailabilityPage = lazy(
+  () => import("@/pages/therapist/dashboard/AvailabilityPage")
+);
+
 // Global error
 const GlobalError = lazy(() => import("@/pages/errors/GlobalError"));
 
@@ -214,10 +225,23 @@ const router = createBrowserRouter([
     element: <ProtectedRoute allowedRoles={[UserRole.THERAPIST]} />,
     errorElement: <GlobalError />,
     children: [
-      // TODO: Create Therapist Layout and pages
       {
-        path: ROUTES.THERAPIST.DASHBOARD,
         element: <TherapistLayout />,
+        children: [
+          { index: true, element: <TherapistDashboardPage /> },
+          {
+            path: ROUTES.THERAPIST.DASHBOARD,
+            element: <TherapistDashboardPage />,
+          },
+          {
+            path: ROUTES.THERAPIST.AVAILABILITY,
+            element: <TherapistAvailabilityPage />,
+          },
+          {
+            path: ROUTES.THERAPIST.SETTINGS,
+            element: <TherapistSettingsPage />,
+          },
+        ],
       },
     ],
   },
