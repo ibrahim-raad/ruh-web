@@ -1,8 +1,16 @@
 import { createCrudHooks } from "@/shared/hooks/useCrudQuery";
 import { therapistsAvailabilityService } from "./therapists-availability.service";
-import type { TherapistAvailability } from "../types/therapist-availability.types";
+import type {
+  CreateTherapistAvailabilityDto,
+  TherapistAvailability,
+  UpdateTherapistAvailabilityDto,
+} from "../types/therapist-availability.types";
 
-const therapistAvailabilityHooks = createCrudHooks<TherapistAvailability>({
+const therapistAvailabilityHooks = createCrudHooks<
+  TherapistAvailability,
+  CreateTherapistAvailabilityDto,
+  UpdateTherapistAvailabilityDto
+>({
   queryKey: "therapists-availability",
   service: therapistsAvailabilityService,
   messages: {
