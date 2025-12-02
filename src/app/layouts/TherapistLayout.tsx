@@ -8,6 +8,7 @@ import {
   Calendar,
   Settings,
   AlertTriangle,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/widgets/ThemeToggle";
@@ -63,6 +64,11 @@ export default function TherapistLayout() {
           to={ROUTES.THERAPIST.AVAILABILITY}
           label="Availability"
           icon={<Calendar className="h-4 w-4 mr-3" />}
+        />
+        <NavItem
+          to={ROUTES.THERAPIST.PATIENTS}
+          label="Patients"
+          icon={<Users className="h-4 w-4 mr-3" />}
         />
         <NavItem
           to={ROUTES.THERAPIST.SETTINGS}

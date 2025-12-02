@@ -40,6 +40,8 @@ export const ROUTES = {
   THERAPIST: {
     ROOT: "/therapist",
     DASHBOARD: "/therapist/dashboard",
+    PATIENTS: "/therapist/patients",
+    PATIENT_DETAILS: "/therapist/patients/:id",
     SESSIONS: "/therapist/sessions",
     AVAILABILITY: "/therapist/availability",
     SETTINGS: "/therapist/settings",
