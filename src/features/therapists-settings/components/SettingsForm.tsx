@@ -15,6 +15,9 @@ import {
 } from "@/features/therapists-settings/api/useTherapistsSettings";
 import { useEffect } from "react";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { useUpdateTherapist } from "@/features/therapists/api/useTherapists";
+import { useCurrencies } from "@/features/currencies/api/useCurrencies";
 
 const settingsSchema = z.object({
   is_open: z.boolean(),
@@ -25,6 +28,8 @@ const settingsSchema = z.object({
     .number()
     .min(15, "Must be at least 15 minutes"),
   timezone: z.string().min(1, "Timezone is required"),
+  rate_per_hour: z.coerce.number().min(1, "Must be at least 1 unit"),
+  currency_id: z.string().min(1, "Currency is required"),
 });
 
 type SettingsFormValues = z.infer<typeof settingsSchema>;
@@ -47,7 +52,10 @@ export function SettingsForm({
   onCancel,
 }: SettingsFormProps) {
   const { data: settings } = useTherapistSettings(therapistId);
+  const { data: currencies } = useCurrencies({ limit: 100 });
   const updateSettings = useUpdateTherapistSettings();
+  const updateTherapist = useUpdateTherapist();
+  const { therapist, setTherapist } = useAuthStore();
 
   const {
     register,
@@ -65,6 +73,8 @@ export function SettingsForm({
       max_sessions_per_day: 8,
       session_duration_minutes: 60,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      rate_per_hour: 1,
+      currency_id: "",
     },
   });
 
@@ -77,9 +87,11 @@ export function SettingsForm({
         max_sessions_per_day: settings.max_sessions_per_day,
         session_duration_minutes: settings.session_duration_minutes,
         timezone: settings.timezone,
+        rate_per_hour: therapist?.rate_per_hour ?? 1,
+        currency_id: therapist?.currency?.id ?? "",
       });
     }
-  }, [settings, reset]);
+  }, [settings, reset, therapist]);
 
   const onSubmit = async (data: SettingsFormValues) => {
     if (!settings) {
@@ -95,6 +107,17 @@ export function SettingsForm({
           version: settings.version,
         },
       });
+      const updatedTherapist = await updateTherapist.mutateAsync({
+        id: therapistId,
+        data: {
+          version: therapist?.user.version ?? 0,
+          therapist_version: therapist?.version ?? 0,
+          rate_per_hour: data.rate_per_hour,
+          currency_id: data.currency_id,
+        },
+      });
+
+      setTherapist(updatedTherapist);
 
       toast.success("Settings saved successfully");
       if (onSuccess) {
@@ -205,6 +228,51 @@ export function SettingsForm({
               {errors.max_booking_days.message}
             </p>
           )}
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="rate_per_hour">Rate per Hour</Label>
+          <Input type="number" {...register("rate_per_hour")} />
+          {errors.rate_per_hour && (
+            <p className="text-sm text-destructive">
+              {errors.rate_per_hour.message}
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            How much do you charge per hour?
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="currency_id">Currency</Label>
+          <Controller
+            name="currency_id"
+            control={control}
+            render={({ field }) => (
+              <SearchableSelect
+                value={field.value}
+                onChange={field.onChange}
+                options={
+                  currencies?.data.map((currency) => ({
+                    label: `${currency.code} (${currency.symbol})`,
+                    value: currency.id,
+                  })) ?? []
+                }
+                placeholder="Select currency"
+                searchPlaceholder="Search currency..."
+              />
+            )}
+          />
+          {errors.currency_id && (
+            <p className="text-sm text-destructive">
+              {errors.currency_id.message}
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            Select the currency for your rate.
+          </p>
         </div>
       </div>
 
