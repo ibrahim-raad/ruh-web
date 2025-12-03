@@ -88,7 +88,7 @@ const TherapistSettingsPage = lazy(
   () => import("@/pages/therapist/dashboard/SettingsPage")
 );
 const TherapistAvailabilityPage = lazy(
-  () => import("@/pages/therapist/dashboard/AvailabilityPage")
+  () => import("@/pages/therapist/availability/index")
 );
 const TherapistPatientsPage = lazy(
   () => import("@/pages/therapist/dashboard/PatientsPage")
