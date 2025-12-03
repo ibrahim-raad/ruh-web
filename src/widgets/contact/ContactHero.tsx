@@ -1,5 +1,3 @@
-// Brand icons removed - using Simple Icons SVGs instead
-
 export function ContactHero() {
   return (
     <div className="space-y-6 sticky top-24">
