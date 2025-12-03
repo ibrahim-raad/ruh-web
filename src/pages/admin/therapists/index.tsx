@@ -5,6 +5,7 @@ import { useTableState } from "@/shared/hooks/useTableState";
 import { useTherapists } from "@/features/therapists/api/useTherapists";
 import { createTherapistColumns } from "@/features/therapists/components/columns";
 import { TherapistProfileDrawer } from "@/features/therapists/components/TherapistProfileDrawer";
+import { StatusFilter } from "@/features/therapists/components/StatusFilter";
 import type { Therapist } from "@/features/therapists/types/therapist.types";
 import { HeartPlus } from "lucide-react";
 
@@ -23,7 +24,24 @@ export default function TherapistsPage() {
     onViewProfile: setSelectedTherapist,
   });
 
-  if (!isLoading && data?.data?.length === 0 && !tableState.search) {
+  const handleStatusesChange = (statuses: string[]) => {
+    if (statuses.length === 0) {
+      tableState.clearFilter("statuses");
+    } else {
+      tableState.setFilter("statuses", statuses);
+    }
+  };
+
+  const selectedStatuses = (tableState.filters.statuses as string[]) || [];
+
+  const hasActiveFilters =
+    tableState.search ||
+    Object.keys(tableState.filters).some((key) => {
+      const value = tableState.filters[key];
+      return Array.isArray(value) ? value.length > 0 : Boolean(value);
+    });
+
+  if (!isLoading && data?.data?.length === 0 && !hasActiveFilters) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -67,6 +85,14 @@ export default function TherapistsPage() {
         onPageChange={tableState.setPage}
         onLimitChange={tableState.setLimit}
         onSortChange={tableState.setSort}
+        filters={
+          <StatusFilter
+            selectedStatuses={selectedStatuses}
+            onStatusesChange={handleStatusesChange}
+          />
+        }
+        showClearFilters={selectedStatuses.length > 0}
+        onClearFilters={() => tableState.clearAllFilters()}
         emptyMessage="No therapists found."
       />
 
