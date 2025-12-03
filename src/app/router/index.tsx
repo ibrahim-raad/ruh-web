@@ -85,13 +85,14 @@ const TherapistDashboardPage = lazy(
   () => import("@/pages/therapist/dashboard/index")
 );
 const TherapistSettingsPage = lazy(
-  () => import("@/pages/therapist/dashboard/SettingsPage")
+  () => import("@/pages/therapist/settings/index")
 );
 const TherapistAvailabilityPage = lazy(
   () => import("@/pages/therapist/availability/index")
 );
 const TherapistPatientsPage = lazy(
-  () => import("@/pages/therapist/dashboard/PatientsPage")
+  () => import("@/pages/therapist/patients/index")
+);
 );
 
 // Global error

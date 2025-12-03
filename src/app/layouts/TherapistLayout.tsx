@@ -61,14 +61,14 @@ export default function TherapistLayout() {
           icon={<LayoutDashboard className="h-4 w-4 mr-3" />}
         />
         <NavItem
-          to={ROUTES.THERAPIST.AVAILABILITY}
-          label="Availability"
-          icon={<Calendar className="h-4 w-4 mr-3" />}
-        />
-        <NavItem
           to={ROUTES.THERAPIST.PATIENTS}
           label="Patients"
           icon={<Users className="h-4 w-4 mr-3" />}
+        />
+        <NavItem
+          to={ROUTES.THERAPIST.AVAILABILITY}
+          label="Availability"
+          icon={<Calendar className="h-4 w-4 mr-3" />}
         />
         <NavItem
           to={ROUTES.THERAPIST.SETTINGS}
