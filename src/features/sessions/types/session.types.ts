@@ -28,9 +28,3 @@ export enum SessionStatus {
   MISSED = "MISSED",
   RESCHEDULED = "RESCHEDULED",
 }
-
-export type CreateSessionDto = Omit<Session, keyof BaseEntity>;
-
-export type UpdateSessionDto = Partial<CreateSessionDto> & {
-  version: number;
-};
