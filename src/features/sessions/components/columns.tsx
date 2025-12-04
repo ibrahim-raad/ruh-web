@@ -1,22 +1,10 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { DataTableColumnHeader } from "@/shared/components/data-table/DataTableColumnHeader";
-import { DataTableRowActions } from "@/shared/components/data-table/DataTableRowActions";
-import {
-  createEditAction,
-  createDeleteAction,
-} from "@/shared/components/data-table/row-actions-helpers";
+
 import type { Session } from "../types/session.types";
 
-interface CreateColumnsOptions {
-  onEdit: (session: Session) => void;
-  onDelete: (session: Session) => void;
-}
-
-export function createSessionColumns({
-  onEdit,
-  onDelete,
-}: CreateColumnsOptions): ColumnDef<Session>[] {
+export function createSessionColumns(): ColumnDef<Session>[] {
   return [
     {
       accessorKey: "name",
@@ -63,23 +51,6 @@ export function createSessionColumns({
         return (
           <div className="text-sm text-muted-foreground whitespace-nowrap">
             {format(new Date(date), "MMM dd, yyyy")}
-          </div>
-        );
-      },
-    },
-    {
-      id: "actions",
-      header: () => <DataTableColumnHeader title="Actions" align="right" />,
-      cell: ({ row }) => {
-        const session = row.original;
-        return (
-          <div className="text-right">
-            <DataTableRowActions
-              actions={[
-                createEditAction(() => onEdit(session)),
-                createDeleteAction(() => onDelete(session)),
-              ]}
-            />
           </div>
         );
       },
