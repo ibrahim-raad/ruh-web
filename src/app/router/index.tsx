@@ -93,6 +93,8 @@ const TherapistAvailabilityPage = lazy(
 const TherapistPatientsPage = lazy(
   () => import("@/pages/therapist/patients/index")
 );
+const PatientDetailsPage = lazy(
+  () => import("@/pages/therapist/patients-details")
 );
 
 // Global error
@@ -244,6 +246,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.THERAPIST.PATIENTS,
             element: <TherapistPatientsPage />,
+          },
+          {
+            path: ROUTES.THERAPIST.PATIENT_DETAILS,
+            element: <PatientDetailsPage />,
           },
           {
             path: ROUTES.THERAPIST.SETTINGS,

@@ -3,8 +3,19 @@ import { format } from "date-fns";
 import { DataTableColumnHeader } from "@/shared/components/data-table/DataTableColumnHeader";
 import type { TherapyCase } from "../types/therapy-case.types";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
+import { UserGender } from "@/features/users/types/user.types";
 
-export function createTherapyCaseColumns(): ColumnDef<TherapyCase>[] {
+interface CreateColumnsOptions {
+  onViewDetails?: (therapyCase: TherapyCase) => void;
+}
+
+export function createTherapyCaseColumns(
+  options: CreateColumnsOptions = {}
+): ColumnDef<TherapyCase>[] {
+  const { onViewDetails } = options;
+
   return [
     {
       accessorKey: "patient.user.full_name",
@@ -20,6 +31,24 @@ export function createTherapyCaseColumns(): ColumnDef<TherapyCase>[] {
           {row.original.patient?.user?.full_name}
         </div>
       ),
+    },
+    {
+      accessorKey: "gender",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          title="Gender"
+          isSorted={column.getIsSorted()}
+          onSort={() => column.toggleSorting()}
+        />
+      ),
+      cell: ({ row }) => {
+        const gender = row.original.patient.user.gender;
+        return (
+          <Badge variant={gender === UserGender.MALE ? "default" : "secondary"}>
+            {gender}
+          </Badge>
+        );
+      },
     },
     {
       accessorKey: "status",
@@ -40,23 +69,13 @@ export function createTherapyCaseColumns(): ColumnDef<TherapyCase>[] {
       },
     },
     {
-      accessorKey: "type",
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          title="Type"
-          isSorted={column.getIsSorted()}
-          onSort={() => column.toggleSorting()}
-        />
-      ),
-      cell: ({ row }) => <Badge variant="outline">{row.original.type}</Badge>,
-    },
-    {
       accessorKey: "total_sessions",
       header: ({ column }) => (
         <DataTableColumnHeader
           title="Total Sessions"
           isSorted={column.getIsSorted()}
           onSort={() => column.toggleSorting()}
+          align="center"
         />
       ),
       cell: ({ row }) => (
@@ -79,6 +98,25 @@ export function createTherapyCaseColumns(): ColumnDef<TherapyCase>[] {
         return (
           <div className="text-sm text-muted-foreground whitespace-nowrap">
             {format(new Date(date), "MMM dd, yyyy")}
+          </div>
+        );
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        if (!onViewDetails) return null;
+
+        return (
+          <div className="flex justify-end">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onViewDetails(row.original)}
+              title="View Details"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
           </div>
         );
       },
